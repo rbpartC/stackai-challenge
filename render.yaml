@@ -11,7 +11,7 @@ databases:
     plan: free
     databaseName: temporaldb
     user: temporaldbuser
-    ipAllowList: []
+    # ipAllowList: []
   
 
 services:
