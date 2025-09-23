@@ -11,11 +11,12 @@ databases:
     plan: free
     databaseName: temporaldb
     user: temporaldbuser
-    # ipAllowList: []
-  
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
 
 services:
-  - type: pserv
+  - type: web
     name: pgbouncer
     runtime: docker
     plan: free
