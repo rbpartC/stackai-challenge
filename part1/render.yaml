@@ -1,0 +1,23 @@
+envVarGroups:
+  - name: temporal
+    envVars:
+      - key : TEST
+        value: test-value
+      
+databases:
+  - name: temporal-db 
+    postgresMajorVersion: '17' 
+    region: frankfurt
+    plan: basic-4gb
+    ipAllowList: []
+
+services:
+  - type: web
+    name: elasticsearch
+    runtime: docker
+    image: 
+      url: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
+    envVars:
+      - fromGroup: temporal
+
+
