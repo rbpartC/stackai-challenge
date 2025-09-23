@@ -18,6 +18,7 @@ services:
   - type: pserv
     name: pgbouncer
     runtime: docker
+    plan: free
     image:
       url: edoburu/pgbouncer:1.16.0
     envVars:
