@@ -41,7 +41,7 @@ services:
   - type: web
     name: elasticsearch
     region: frankfurt
-    plan: free
+    plan: starter
     runtime: docker
     disk:
       name: esdata
