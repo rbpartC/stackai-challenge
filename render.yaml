@@ -41,14 +41,13 @@ services:
   - type: web
     name: elasticsearch
     region: frankfurt
-    plan: starter
+    plan: standard
     runtime: docker
     disk:
       name: esdata
       mountPath: /usr/share/elasticsearch/data
       sizeGB: 5
-    image: 
-      url: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
+    repo: https://github.com/rbpartC/elasticsearch
     envVars:
       - fromGroup: temporal
       - key: discovery.type
