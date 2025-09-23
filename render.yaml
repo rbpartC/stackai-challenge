@@ -20,8 +20,7 @@ services:
     name: pgbouncer
     runtime: docker
     plan: free
-    image:
-      url: edoburu/pgbouncer:v1.24.1-p1
+    repo: https://github.com/render-oss/docker-pgbouncer
     envVars:
       - key: DATABASE_URL
         fromDatabase:
