@@ -15,26 +15,26 @@ databases:
       - source: 0.0.0.0/0
         description: everywhere
 
-# services:
-  # - type: web
-  #   name: pgbouncer
-  #   runtime: docker
-  #   plan: free
-  #   image:
-  #     url: edoburu/pgbouncer:1.16.0
-  #   envVars:
-  #     - key: DATABASE_URL
-  #       fromDatabase:
-  #         name:  temporal-db
-  #         property: connectionString
-  #     - key: POOL_MODE
-  #       value: transaction
-  #     - key: SERVER_RESET_QUERY
-  #       value: DISCARD ALL
-  #     - key: MAX_CLIENT_CONN
-  #       value: 500
-  #     - key: DEFAULT_POOL_SIZE
-  #       value: 50
+services:
+  - type: web
+    name: pgbouncer
+    runtime: docker
+    plan: free
+    image:
+      url: edoburu/pgbouncer:v1.24.1-p1
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name:  temporal-db
+          property: connectionString
+      - key: POOL_MODE
+        value: transaction
+      - key: SERVER_RESET_QUERY
+        value: DISCARD ALL
+      - key: MAX_CLIENT_CONN
+        value: 500
+      - key: DEFAULT_POOL_SIZE
+        value: 50
 #   - type: web
 #     name: elasticsearch
 #     runtime: docker
