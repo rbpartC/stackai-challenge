@@ -16,12 +16,14 @@ databases:
         description: everywhere
 
 services:
+  # PG Bouncer. Should be private but not supported in free plan
   - type: web
     name: pgbouncer
     runtime: docker
     region: frankfurt
     plan: free
     repo: https://github.com/render-oss/docker-pgbouncer
+    # TODO: Should be pinned to a version
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -35,12 +37,23 @@ services:
         value: 500
       - key: DEFAULT_POOL_SIZE
         value: 50
-#   - type: web
-#     name: elasticsearch
-#     runtime: docker
-#     image: 
-#       url: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
-#     envVars:
-#       - fromGroup: temporal
+
+  - type: web
+    name: elasticsearch
+    region: frankfurt
+    plan: free
+    runtime: docker
+    disk:
+      name: esdata
+      mountPath: /usr/share/elasticsearch/data
+      sizeGB: 5
+    image: 
+      url: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
+    envVars:
+      - fromGroup: temporal
+      - key: discovery.type
+        value: single-node
+      - key: ES_JAVA_OPTS
+        value: "-Xms512m -Xmx512m"
 
 
