@@ -19,6 +19,7 @@ services:
   - type: web
     name: pgbouncer
     runtime: docker
+    region: frankfurt
     plan: free
     repo: https://github.com/render-oss/docker-pgbouncer
     envVars:
