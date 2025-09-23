@@ -9,8 +9,8 @@ databases:
     postgresMajorVersion: '17' 
     region: frankfurt
     plan: free
-    databaseName: temporal-db
-    user: temporal-db-user
+    databaseName: temporaldb
+    user: temporaldbuser
     ipAllowList: []
 
 # services:
