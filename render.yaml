@@ -8,16 +8,18 @@ databases:
   - name: temporal-db 
     postgresMajorVersion: '17' 
     region: frankfurt
-    plan: basic-4gb
+    plan: free
+    databaseName: temporal-db
+    user: temporal-db-user
     ipAllowList: []
 
-services:
-  - type: web
-    name: elasticsearch
-    runtime: docker
-    image: 
-      url: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
-    envVars:
-      - fromGroup: temporal
+# services:
+#   - type: web
+#     name: elasticsearch
+#     runtime: docker
+#     image: 
+#       url: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
+#     envVars:
+#       - fromGroup: temporal
 
 
