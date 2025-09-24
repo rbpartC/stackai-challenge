@@ -60,49 +60,49 @@ services:
       - key: ELASTIC_PASSWORD
         generateValue: true
 
-  # - type: web
-  #   name: temporal-frontend
-  #   region: frankfurt
-  #   plan: free 
-  #   runtime: docker
+  - type: web
+    name: temporal-frontend
+    region: frankfurt
+    plan: free 
+    runtime: docker
     
-  #   envVars:
-  #     - key: POSTGRESQL_SEEDS
-  #       fromService:
-  #         name: pgbouncer
-  #         type: web
-  #         property: host
-  #     - key: POSTGRESQL_PORT
-  #       fromService:
-  #         name: pgbouncer
-  #         type: web
-  #         property: port
-  #     - key: POSTGRESQL_USER
-  #       fromDatabase:
-  #         name: temporal-db
-  #         property: user
-  #     - key: POSTGRESQL_PASSWORD
-  #       fromDatabase:
-  #         name: temporal-db
-  #         property: password
-  #     - key: POSTGRESQL_DBNAME
-  #       fromDatabase:
-  #         name: temporal-db
-  #         property: database
+    envVars:
+      - key: POSTGRESQL_SEEDS
+        fromService:
+          name: pgbouncer
+          type: web
+          property: host
+      - key: POSTGRESQL_PORT
+        fromService:
+          name: pgbouncer
+          type: web
+          property: port
+      - key: POSTGRESQL_USER
+        fromDatabase:
+          name: temporal-db
+          property: user
+      - key: POSTGRESQL_PASSWORD
+        fromDatabase:
+          name: temporal-db
+          property: password
+      - key: POSTGRESQL_DBNAME
+        fromDatabase:
+          name: temporal-db
+          property: database
 
-  #     - key: ENABLE_ES
-  #       value: "true"
-  #     - key: ES_SEEDS
-  #       fromService:
-  #         name: elasticsearch
-  #         type: web
-  #         property: host
+      - key: ENABLE_ES
+        value: "true"
+      - key: ES_SEEDS
+        fromService:
+          name: elasticsearch
+          type: web
+          property: host
 
-  #     - key: ES_USER
-  #       value: elastic
-  #     - key: ES_PWD
-  #       fromService:
-  #         name: elasticsearch
-  #         type: web
-  #         property: env.ELASTIC_PASSWORD
+      - key: ES_USER
+        value: elastic
+      - key: ES_PWD
+        fromService:
+          name: elasticsearch
+          type: web
+          property: ELASTIC_PASSWORD
 
