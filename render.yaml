@@ -94,21 +94,21 @@ services:
         envVarKey: ELASTIC_PASSWORD
     - key: DBNAME
       fromDatabase:
-        name: temporal-db
+        name: temporal-core
         property: database
     - key: DB_PORT
       fromDatabase:
-        name: temporal-db
+        name: temporal-core
         property: port
     - key: POSTGRES_USER
       fromDatabase:
-        name: temporal-db
+        name: temporal-core
         property: user
     - key: POSTGRES_PWD
       fromDatabase:
-        name: temporal-db
+        name: temporal-core
         property: password
     - key: POSTGRES_SEEDS
       fromDatabase:
-        name: temporal-db
+        name: temporal-core
         property: host
