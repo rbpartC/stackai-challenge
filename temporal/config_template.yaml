@@ -10,7 +10,7 @@ persistence:
         default:
             sql:
                 pluginName: "postgres12"
-                databaseName: "{{ default .Env.DBNAME "temporal" }}"
+                databaseName: "{{ default .Env.POSTGRES_DBNAME "temporal" }}"
                 connectAddr: "{{ default .Env.POSTGRES_SEEDS "" }}:{{ default .Env.POSTGRESQL_PORT "5432" }}"
                 connectProtocol: "tcp"
                 user: "{{ default .Env.POSTGRESQL_USER "" }}"
