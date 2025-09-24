@@ -1,9 +1,17 @@
 envVarGroups:
-  - name: databases
+  - name: temporal-shared
     envVars:
-      - key : TEST
-        value: test-value
-      
+    - key: DYNAMIC_CONFIG_FILE_PATH
+      value: /etc/temporal/dynamicconfig_es.yaml
+    - key: ENABLE_ES
+      value: "true"
+    - key: ES_VERSION
+      value: v7
+    - key: ES_USER
+      value: elastic
+    - key: DB
+      value: postgresql
+
 databases:
   - name: temporal-core
     # Core state db
@@ -61,91 +69,46 @@ services:
         generateValue: true
   
   - type: pserv
-    name: temporal
-    autoDeploy: false
+    name: temporal-frontend
     plan: starter
     region: frankfurt
     runtime: docker
-    dockerfilePath: ./server/Dockerfile
+    dockerfilePath: ./temporal-cluster/server/Dockerfile
     envVars:
+    - fromGroup: temporal-shared
     - key: SERVICES
-      value: frontend,matching,history,worker
-    - key: DYNAMIC_CONFIG_FILE_PATH
-      value: /etc/temporal/dynamicconfig.yaml
-    - key: BIND_ON_IP
-      value: 0.0.0.0
-    - key: TEMPORAL_BROADCAST_ADDRESS
-      value: 0.0.0.0
-    - key: TEMPORAL_CLI_ADDRESS
-      value: localhost:7233
+      value: frontend
     - key: SKIP_POSTGRES_DB_CREATION
       value: "true"
-    - key: DB
-      value: postgresql
-    - key: DBNAME
-      fromDatabase:
-        name: temporal-core
-        property: database
-    - key: DB_PORT
-      fromDatabase:
-        name: temporal-core
-        property: port
-    - key: POSTGRES_USER
-      fromDatabase:
-        name: temporal-core
-        property: user
-    - key: POSTGRES_PWD
-      fromDatabase:
-        name: temporal-core
-        property: password
-    - key: POSTGRES_SEEDS
-      fromDatabase:
-        name: temporal-core
-        property: host
-    - key: ENABLE_ES
+    - key: SKIP_VISIBILITY_DB_SETUP
       value: "true"
     - key: ES_SEEDS
       fromService:
-        name: elasticsearch
-        type: web
+        name: temporal-elasticsearch
+        type: pserv
         property: host
-    - key: ES_USER
-      value: elastic
     - key: ES_PWD
       fromService:
-        name: elasticsearch
-        type: web
+        name: temporal-elasticsearch
+        type: pserv
         envVarKey: ELASTIC_PASSWORD
-  
-  - type: web
-    name: temporal-ui
-    autoDeploy: false
-    plan: starter
-    region: frankfurt
-    runtime: docker
-    dockerfilePath: ./web/Dockerfile
-    envVars:
-    - key: PORT
-      value: 8088
-    - key: TEMPORAL_PERMIT_WRITE_API
-      value: "true"
-    - key: TEMPORAL_GRPC_HOST
-      fromService:
-        name: temporal
-        type: pserv
-        property: host
-
-  - type: worker
-    repo: https://github.com/render-examples/sample-temporal-app
-    name: app-worker
-    plan: starter
-    region: frankfurt
-    runtime: go
-    buildCommand: go build worker/main.go
-    startCommand: ./main
-    envVars:
-    - key: TEMPORAL_CLUSTER_HOST
-      fromService:
-        name: temporal
-        type: pserv
+    - key: DBNAME
+      fromDatabase:
+        name: temporal-db
+        property: database
+    - key: DB_PORT
+      fromDatabase:
+        name: temporal-db
+        property: port
+    - key: POSTGRES_USER
+      fromDatabase:
+        name: temporal-db
+        property: user
+    - key: POSTGRES_PWD
+      fromDatabase:
+        name: temporal-db
+        property: password
+    - key: POSTGRES_SEEDS
+      fromDatabase:
+        name: temporal-db
         property: host
