@@ -104,5 +104,5 @@ services:
         fromService:
           name: elasticsearch
           type: web
-          property: ELASTIC_PASSWORD
+          envVarKey: ELASTIC_PASSWORD
 
