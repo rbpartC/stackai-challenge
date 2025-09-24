@@ -37,7 +37,7 @@ persistence:
 services:
     frontend:
         rpc:
-            grpcPort: {{ $temporalGrpcPort }}
+            grpcPort: {{ default .Env.FRONTEND_GRPC_PORT "8233" }}
             membershipPort: {{ default .Env.FRONTEND_MEMBERSHIP_PORT "6933" }}
             bindOnIP: {{ default .Env.BIND_ON_IP "127.0.0.1" }}
 
