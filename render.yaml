@@ -277,3 +277,18 @@ services:
         name: temporal-frontend
         type: pserv
         property: host
+
+  - type: worker
+    name: temporal-python-worker
+    plan: starter
+    region: frankfurt
+    runtime: docker
+    dockerfilePath: ./temporal-workflows/Dockerfile
+    envVars:
+    - key: TEMPORAL_HOST
+      fromService:
+        name: temporal-frontend
+        type: pserv
+        property: host
+    - key: TEMPORAL_PORT
+      value: "7233"
