@@ -6,8 +6,8 @@ set -eu -o pipefail
 
 : "${DB:=cassandra}"
 : "${SKIP_SCHEMA_SETUP:=false}"
-: "${SKIP_DB_CREATE:=true}"
-: "${DBNAME:=temporal}"
+: "${SKIP_DB_CREATE:=false}"
+: "${DBNAME:=${POSTGRES_DBNAME}}"
 
 
 : "${VISIBILITY_DBNAME:=temporal_visibility}"
@@ -20,7 +20,7 @@ set -eu -o pipefail
 
 : "${POSTGRES_SEEDS:=}"
 : "${POSTGRES_USER:=}"
-: "${POSTGRES_PWD:=}"
+: "${POSTGRES_PASSWORD:=}"
 : "${POSTGRES_DBNAME:=}"
 
 
@@ -98,7 +98,7 @@ wait_for_db() {
 
 setup_postgres_schema() {
     # TODO (alex): Remove exports
-    export SQL_PASSWORD=${POSTGRES_PWD}
+    export SQL_PASSWORD=${POSTGRES_PASSWORD}
 
     POSTGRES_VERSION_DIR=v12
     SCHEMA_DIR=${TEMPORAL_HOME}/schema/postgresql/${POSTGRES_VERSION_DIR}/temporal/versioned
