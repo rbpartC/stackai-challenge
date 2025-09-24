@@ -204,7 +204,7 @@ services:
       fromDatabase:
         name: temporal-core
         property: port
-  - type: pserv
+  - type: worker
     name: temporal-worker
     plan: starter
     region: frankfurt
