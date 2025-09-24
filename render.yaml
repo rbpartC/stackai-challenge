@@ -5,7 +5,8 @@ envVarGroups:
         value: test-value
       
 databases:
-  - name: temporal-db 
+  - name: temporal-db
+    # Core state db
     postgresMajorVersion: '17' 
     region: frankfurt
     plan: free
@@ -17,12 +18,12 @@ databases:
 
 services:
   # PG Bouncer. Should be private but not supported in free plan
-  - type: web
-    name: pgbouncer
+  - type: pserv
+    name: pgbouncerff
     runtime: docker
     # TODO: move to frankfurt
-    region: oregon
-    plan: free
+    region: frankfurt
+    plan: standard
     repo: https://github.com/render-oss/docker-pgbouncer
     # TODO: Should be pinned to a version
     envVars:
@@ -40,6 +41,7 @@ services:
         value: 50
 
   - type: web
+    # This is the visibility DB
     name: elasticsearch
     region: frankfurt
     plan: standard
@@ -56,4 +58,50 @@ services:
       - key: ES_JAVA_OPTS
         value: "-Xms512m -Xmx512m"
 
+  # - type: web
+  #   name: temporal-frontend
+  #   region: frankfurt
+  #   plan: free 
+  #   runtime: docker
+    
+  #   envVars:
+  #     - key: POSTGRESQL_SEEDS
+  #       fromService:
+  #         name: pgbouncer
+  #         type: web
+  #         property: host
+  #     - key: POSTGRESQL_PORT
+  #       fromService:
+  #         name: pgbouncer
+  #         type: web
+  #         property: port
+  #     - key: POSTGRESQL_USER
+  #       fromDatabase:
+  #         name: temporal-db
+  #         property: user
+  #     - key: POSTGRESQL_PASSWORD
+  #       fromDatabase:
+  #         name: temporal-db
+  #         property: password
+  #     - key: POSTGRESQL_DBNAME
+  #       fromDatabase:
+  #         name: temporal-db
+  #         property: databaseName
+
+  #     - key: ENABLE_ES
+  #       value: "true"
+  #     - key: ES_SEEDS
+  #       fromService:
+  #         name: elasticsearch
+  #         type: web
+  #         property: host
+
+  #     - key: ES_PORT
+  #       fromService:
+  #         name: elasticsearch
+  #         type: web
+  #         property: port
+  #     - key: ES_USER
+  #       value: elastic
+  #     - key: ES_PWD
 
