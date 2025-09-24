@@ -1,3 +1,4 @@
+from datetime import timedelta
 from temporalio import workflow, activity
 from temporalio.client import Client
 from temporalio.api.workflowservice.v1 import ListNamespacesRequest, RegisterNamespaceRequest
@@ -68,7 +69,7 @@ async def main():
     await client.workflow_service.register_namespace(
         RegisterNamespaceRequest(
             namespace="default",
-            workflow_execution_retention_period=3600
+            workflow_execution_retention_period=timedelta(days=1)
         )
     )
     print("Registration complete (may take a few seconds to be usable)")
