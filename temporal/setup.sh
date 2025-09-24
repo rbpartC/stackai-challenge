@@ -73,7 +73,7 @@ validate_db_env() {
 
 
 wait_for_postgres() {
-    until nc -z "${POSTGRES_SEEDS%%,*}" "${DB_PORT}"; do
+    until nc -z "${POSTGRES_SEEDS}" "${DB_PORT}"; do
         echo 'Waiting for PostgreSQL to startup.'
         sleep 1
     done
