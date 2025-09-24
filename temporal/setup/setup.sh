@@ -6,7 +6,7 @@ set -eu -o pipefail
 
 : "${DB:=cassandra}"
 : "${SKIP_SCHEMA_SETUP:=false}"
-: "${SKIP_DB_CREATE:=false}"
+: "${SKIP_DB_CREATE:=true}"
 : "${DBNAME:=${POSTGRES_DBNAME}}"
 
 
