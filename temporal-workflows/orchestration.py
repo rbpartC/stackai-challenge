@@ -4,6 +4,7 @@ from temporalio.api.workflowservice.v1 import ListNamespacesRequest, RegisterNam
 from pydantic import BaseModel, ValidationError, Field
 from typing import Annotated, List
 from client import get_client
+import asyncio
 
 import uuid
 # --- Data models with validation ---
