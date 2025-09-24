@@ -19,7 +19,7 @@ persistence:
                 maxIdleConns: {{ default .Env.SQL_MAX_IDLE_CONNS "20" }}
                 maxConnLifetime: {{ default .Env.SQL_MAX_CONN_TIME "1h" }}
                 tls:
-                    enabled: {{ default .Env.SQL_TLS_ENABLED "true" }}
+                    enabled: {{ default .Env.SQL_TLS_ENABLED "false" }}
                     enableHostVerification: {{ default .Env.SQL_HOST_VERIFICATION "false" }}
         es-visibility:
             elasticsearch:
