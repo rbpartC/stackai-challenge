@@ -42,6 +42,7 @@ set -eu -o pipefail
 
 # Server setup
 : "${TEMPORAL_ADDRESS:=}"
+: "${TEMPORAL_HOME:=/etc/temporal}"
 
 : "${SKIP_DEFAULT_NAMESPACE_CREATION:=false}"
 : "${DEFAULT_NAMESPACE:=default}"
