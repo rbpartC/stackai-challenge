@@ -75,6 +75,7 @@ validate_db_env() {
 wait_for_postgres() {
     until nc -z "${POSTGRES_SEEDS}" "${DB_PORT}"; do
         echo "Waiting for PostgreSQL ${POSTGRES_SEEDS} ${DB_PORT} to startup."
+        nc -z "${POSTGRES_SEEDS}" "${DB_PORT}"
         sleep 1
     done
 
