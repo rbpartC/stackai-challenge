@@ -100,7 +100,7 @@ setup_postgres_schema() {
     SCHEMA_DIR=${TEMPORAL_HOME}/schema/postgresql/${POSTGRES_VERSION_DIR}/temporal/versioned
     # Create database only if its name is different from the user name. Otherwise PostgreSQL container itself will create database.
     if [[ ${DBNAME} != "${POSTGRES_USER}" && ${SKIP_DB_CREATE} != true ]]; then
-        temporal-sql-tool \
+        /usr/local/bin/temporal-sql-tool \
             --plugin ${DB} \
             --ep "${POSTGRES_SEEDS}" \
             -u "${POSTGRES_USER}" \
@@ -114,7 +114,7 @@ setup_postgres_schema() {
             --tls-server-name "${POSTGRES_TLS_SERVER_NAME}" \
             create
     fi
-    temporal-sql-tool \
+    /usr/local/bin/temporal-sql-tool \
         --plugin ${DB} \
         --ep "${POSTGRES_SEEDS}" \
         -u "${POSTGRES_USER}" \
@@ -127,7 +127,7 @@ setup_postgres_schema() {
         --tls-ca-file "${POSTGRES_TLS_CA_FILE}" \
         --tls-server-name "${POSTGRES_TLS_SERVER_NAME}" \
         setup-schema -v 0.0
-    temporal-sql-tool \
+    /usr/local/bin/temporal-sql-tool \
         --plugin ${DB} \
         --ep "${POSTGRES_SEEDS}" \
         -u "${POSTGRES_USER}" \
@@ -145,7 +145,7 @@ setup_postgres_schema() {
     if [[ ${ENABLE_ES} == false ]]; then
       VISIBILITY_SCHEMA_DIR=${TEMPORAL_HOME}/schema/postgresql/${POSTGRES_VERSION_DIR}/visibility/versioned
       if [[ ${VISIBILITY_DBNAME} != "${POSTGRES_USER}" && ${SKIP_DB_CREATE} != true ]]; then
-          temporal-sql-tool \
+          /usr/local/bin/temporal-sql-tool \
               --plugin ${DB} \
               --ep "${POSTGRES_SEEDS}" \
               -u "${POSTGRES_USER}" \
@@ -159,7 +159,7 @@ setup_postgres_schema() {
               --tls-server-name "${POSTGRES_TLS_SERVER_NAME}" \
               create
       fi
-      temporal-sql-tool \
+      /usr/local/bin/temporal-sql-tool \
           --plugin ${DB} \
           --ep "${POSTGRES_SEEDS}" \
           -u "${POSTGRES_USER}" \
@@ -172,7 +172,7 @@ setup_postgres_schema() {
           --tls-ca-file "${POSTGRES_TLS_CA_FILE}" \
           --tls-server-name "${POSTGRES_TLS_SERVER_NAME}" \
           setup-schema -v 0.0
-      temporal-sql-tool \
+      /usr/local/bin/temporal-sql-tool \
           --plugin ${DB} \
           --ep "${POSTGRES_SEEDS}" \
           -u "${POSTGRES_USER}" \
