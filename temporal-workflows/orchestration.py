@@ -68,6 +68,7 @@ async def main():
     await client.workflow_service.register_namespace(
         RegisterNamespaceRequest(
             namespace="default",
+            workflow_execution_retention_period=3600
         )
     )
     print("Registration complete (may take a few seconds to be usable)")
