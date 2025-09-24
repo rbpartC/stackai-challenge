@@ -56,3 +56,17 @@ services:
             grpcPort: {{ default .Env.WORKER_GRPC_PORT "7239" }}
             membershipPort: {{ default .Env.WORKER_MEMBERSHIP_PORT "6939" }}
             bindOnIP: {{ default .Env.BIND_ON_IP "127.0.0.1" }}
+
+
+clusterMetadata:
+  enableGlobalNamespace: false
+  failoverVersionIncrement: 10
+  masterClusterName: "active"
+  currentClusterName: "active"
+  clusterInformation:
+    active:
+      enabled: true
+      initialFailoverVersion: 1
+      rpcName: "frontend"
+      rpcAddress: {{ (print "127.0.0.1:" $temporalGrpcPort) }}
+      httpAddress: {{ (print "127.0.0.1:" $temporalHTTPPort) }}
