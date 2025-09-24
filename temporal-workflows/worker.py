@@ -12,7 +12,7 @@ async def main():
             task_queue="example-task-queue",
             workflows=[OrchestrationWorkflow],
             activities=[add_one, multiply_by_two],
-            executor=executor,
+            activity_executor=executor,
         )
         await worker.run()
 
