@@ -64,13 +64,14 @@ services:
     name: temporal-frontend
     region: frankfurt
     plan: starter
-    runtime: image
-    image: 
-      url: temporalio/server:1.26.3
+    runtime: docker
+    dockerfilePath: ./temporal/Dockerfile
 
     envVars:
       - key: SERVICES
         value: frontend
+      - key: DYNAMIC_CONFIG_FILE_PATH
+        value: /etc/temporal/config/config_template.yaml
       - key: DB
         value: postgresql12
       - key: POSTGRESQL_SEEDS
