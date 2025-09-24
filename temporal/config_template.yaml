@@ -68,5 +68,5 @@ clusterMetadata:
       enabled: true
       initialFailoverVersion: 1
       rpcName: "frontend"
-      rpcAddress: {{ (print "127.0.0.1:" $temporalGrpcPort) }}
-      httpAddress: {{ (print "127.0.0.1:" $temporalHTTPPort) }}
+      rpcAddress: {{ (print "127.0.0.1:" 8233) }}
+      httpAddress: {{ (print "127.0.0.1:" 8080) }}
