@@ -70,6 +70,7 @@ services:
   
   - type: pserv
     name: temporal-frontend
+    autoDeploy: false
     plan: starter
     region: frankfurt
     runtime: docker
@@ -115,6 +116,7 @@ services:
 
   - type: pserv
     name: temporal-history
+    autoDeploy: false
     plan: starter
     region: frankfurt
     runtime: docker
@@ -161,6 +163,7 @@ services:
 
   - type: pserv
     name: temporal-matching
+    autoDeploy: false
     plan: starter
     region: frankfurt
     runtime: docker
@@ -206,6 +209,7 @@ services:
         property: port
   - type: worker
     name: temporal-worker
+    autoDeploy: false
     plan: starter
     region: frankfurt
     runtime: docker
@@ -259,6 +263,7 @@ services:
         
   - type: web
     name: temporal-ui
+    autoDeploy: false
     plan: starter
     region: frankfurt
     runtime: docker

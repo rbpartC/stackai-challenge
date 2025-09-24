@@ -1,5 +1,6 @@
 from temporalio import workflow, activity
 from temporalio.client import Client
+from temporalio.api.workflowservice.v1 import ListNamespacesRequest, RegisterNamespaceRequest
 from pydantic import BaseModel, ValidationError, Field
 from typing import Annotated, List
 
@@ -58,6 +59,18 @@ async def main():
     TEMPORAL_HOST = f"{os.getenv("TEMPORAL_HOST", "localhost")}:{os.getenv("TEMPORAL_PORT", "7233")}"
 
     client = await Client.connect(TEMPORAL_HOST)
+    list_resp = await client.workflow_service.list_namespaces(ListNamespacesRequest())
+    print(f"First page of {len(list_resp.namespaces)} namespaces:")
+    for namespace in list_resp.namespaces:
+        print(f"  Namespace: {namespace.namespace_info.name}")
+
+    print("Attempting to add namespace 'my-namespace'")
+    await client.workflow_service.register_namespace(
+        RegisterNamespaceRequest(
+            namespace="default",
+        )
+    )
+    print("Registration complete (may take a few seconds to be usable)")
     result = await client.start_workflow(
         OrchestrationWorkflow.run,
         [1, 2, 3],
