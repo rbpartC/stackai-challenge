@@ -1,10 +1,10 @@
 from datetime import timedelta
 from temporalio import workflow, activity
-from temporalio.client import Client
 from temporalio.api.workflowservice.v1 import ListNamespacesRequest, RegisterNamespaceRequest
 from pydantic import BaseModel, ValidationError, Field
 from typing import Annotated, List
-
+from .client import get_client
+import uuid
 # --- Data models with validation ---
 
 class InputData(BaseModel):
@@ -55,11 +55,8 @@ class OrchestrationWorkflow:
         return all_results
 
 # --- Example client code to start workflow (for reference) ---
-import os 
 async def main():
-    TEMPORAL_HOST = f"{os.getenv("TEMPORAL_HOST", "localhost")}:{os.getenv("TEMPORAL_PORT", "7233")}"
-
-    client = await Client.connect(TEMPORAL_HOST)
+    client = get_client()
     list_resp = await client.workflow_service.list_namespaces(ListNamespacesRequest())
     print(f"First page of {len(list_resp.namespaces)} namespaces:")
     for namespace in list_resp.namespaces:
@@ -78,10 +75,11 @@ async def main():
     result = await client.start_workflow(
         OrchestrationWorkflow.run,
         [1, 2, 3],
-        id="orchestration-workflow-id-2",
+        id=f"orchestration-workflow-id-{uuid.uuid4()}",
         task_queue="example-task-queue"
     )
     print("Workflow result:", result)
+    
 
 
 if __name__ == "__main__":
