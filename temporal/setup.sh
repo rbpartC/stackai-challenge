@@ -10,7 +10,7 @@ set -eu -o pipefail
 
 : "${DBNAME:=temporal}"
 : "${VISIBILITY_DBNAME:=temporal_visibility}"
-: "${DB_PORT:=3306}"
+: "${POSTGRES_PORT:=5432}"
 
 : "${MYSQL_SEEDS:=}"
 : "${MYSQL_USER:=}"
@@ -73,9 +73,8 @@ validate_db_env() {
 
 
 wait_for_postgres() {
-    until nc -z "${POSTGRES_SEEDS}" "${DB_PORT}"; do
-        echo "Waiting for PostgreSQL ${POSTGRES_SEEDS} ${DB_PORT} to startup."
-        nc -z "${POSTGRES_SEEDS}" "${DB_PORT}"
+    until nc -z "${POSTGRES_SEEDS}" "${POSTGRES_PORT}"; do
+        echo "Waiting for PostgreSQL ${POSTGRES_SEEDS} ${POSTGRES_PORT} to startup."
         sleep 1
     done
 
@@ -105,7 +104,7 @@ setup_postgres_schema() {
             --plugin ${DB} \
             --ep "${POSTGRES_SEEDS}" \
             -u "${POSTGRES_USER}" \
-            -p "${DB_PORT}" \
+            -p "${POSTGRES_PORT}" \
             --db "${DBNAME}" \
             --tls="${POSTGRES_TLS_ENABLED}" \
             --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
@@ -119,7 +118,7 @@ setup_postgres_schema() {
         --plugin ${DB} \
         --ep "${POSTGRES_SEEDS}" \
         -u "${POSTGRES_USER}" \
-        -p "${DB_PORT}" \
+        -p "${POSTGRES_PORT}" \
         --db "${DBNAME}" \
         --tls="${POSTGRES_TLS_ENABLED}" \
         --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
@@ -132,7 +131,7 @@ setup_postgres_schema() {
         --plugin ${DB} \
         --ep "${POSTGRES_SEEDS}" \
         -u "${POSTGRES_USER}" \
-        -p "${DB_PORT}" \
+        -p "${POSTGRES_PORT}" \
         --db "${DBNAME}" \
         --tls="${POSTGRES_TLS_ENABLED}" \
         --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
@@ -150,7 +149,7 @@ setup_postgres_schema() {
               --plugin ${DB} \
               --ep "${POSTGRES_SEEDS}" \
               -u "${POSTGRES_USER}" \
-              -p "${DB_PORT}" \
+              -p "${POSTGRES_PORT}" \
               --db "${VISIBILITY_DBNAME}" \
               --tls="${POSTGRES_TLS_ENABLED}" \
               --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
@@ -164,7 +163,7 @@ setup_postgres_schema() {
           --plugin ${DB} \
           --ep "${POSTGRES_SEEDS}" \
           -u "${POSTGRES_USER}" \
-          -p "${DB_PORT}" \
+          -p "${POSTGRES_PORT}" \
           --db "${VISIBILITY_DBNAME}" \
           --tls="${POSTGRES_TLS_ENABLED}" \
           --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
@@ -177,7 +176,7 @@ setup_postgres_schema() {
           --plugin ${DB} \
           --ep "${POSTGRES_SEEDS}" \
           -u "${POSTGRES_USER}" \
-          -p "${DB_PORT}" \
+          -p "${POSTGRES_PORT}" \
           --db "${VISIBILITY_DBNAME}" \
           --tls="${POSTGRES_TLS_ENABLED}" \
           --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
