@@ -76,25 +76,25 @@ services:
         value: /etc/temporal/config/config_template.yaml
       - key: DB
         value: postgres12
-      - key: POSTGRESQL_SEEDS
+      - key: POSTGRES_SEEDS
         fromService:
           name: pgbouncerff
           type: pserv
           property: host
-      - key: POSTGRESQL_PORT
+      - key: POSTGRES_PORT
         fromService:
           name: pgbouncerff
           type: pserv
           property: port
-      - key: POSTGRESQL_USER
+      - key: POSTGRES_USER
         fromDatabase:
           name: temporal-db
           property: user
-      - key: POSTGRESQL_PASSWORD
+      - key: POSTGRES_PASSWORD
         fromDatabase:
           name: temporal-db
           property: password
-      - key: POSTGRESQL_DBNAME
+      - key: POSTGRES_DBNAME
         fromDatabase:
           name: temporal-db
           property: database
