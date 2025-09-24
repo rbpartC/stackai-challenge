@@ -154,6 +154,11 @@ services:
       fromDatabase:
         name: temporal-core
         property: host
+    - key: DB_PORT
+      fromDatabase:
+        name: temporal-core
+        property: port
+
   - type: pserv
     name: temporal-matching
     plan: starter
@@ -195,6 +200,10 @@ services:
       fromDatabase:
         name: temporal-core
         property: host
+    - key: DB_PORT
+      fromDatabase:
+        name: temporal-core
+        property: port
   - type: pserv
     name: temporal-worker
     plan: starter
@@ -243,6 +252,11 @@ services:
       fromDatabase:
         name: temporal-core
         property: host
+    - key: DB_PORT
+      fromDatabase:
+        name: temporal-core
+        property: port
+        
   - type: web
     name: temporal-ui
     plan: starter
@@ -255,21 +269,6 @@ services:
     - key: TEMPORAL_PERMIT_WRITE_API
       value: "true"
     - key: TEMPORAL_GRPC_HOST
-      fromService:
-        name: temporal-frontend
-        type: pserv
-        property: host
-
-  - type: worker
-    repo: https://github.com/render-examples/sample-temporal-app
-    name: app-worker
-    plan: starter
-    region: frankfurt
-    runtime: go
-    buildCommand: go build worker/main.go
-    startCommand: ./main
-    envVars:
-    - key: TEMPORAL_CLUSTER_HOST
       fromService:
         name: temporal-frontend
         type: pserv
