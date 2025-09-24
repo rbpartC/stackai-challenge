@@ -115,16 +115,10 @@ services:
 
   - type: pserv
     name: temporal-history
-    autoDeploy: false
     plan: starter
     region: frankfurt
     runtime: docker
     dockerfilePath: ./server/Dockerfile
-    scaling:
-      minInstances: 1
-      maxInstances: 3
-      targetMemoryPercent: 80
-      targetCPUPercent: 80
     envVars:
     - fromGroup: temporal-shared
     - key: SERVICES
@@ -162,16 +156,10 @@ services:
         property: host
   - type: pserv
     name: temporal-matching
-    autoDeploy: false
     plan: starter
     region: frankfurt
     runtime: docker
     dockerfilePath: ./server/Dockerfile
-    scaling:
-      minInstances: 1
-      maxInstances: 3
-      targetMemoryPercent: 80
-      targetCPUPercent: 80
     envVars:
     - fromGroup: temporal-shared
     - key: SERVICES
@@ -208,17 +196,11 @@ services:
         name: temporal-core
         property: host
   - type: pserv
-    autoDeploy: false
     name: temporal-worker
     plan: starter
     region: frankfurt
     runtime: docker
     dockerfilePath: ./server/Dockerfile
-    scaling:
-      minInstances: 1
-      maxInstances: 3
-      targetMemoryPercent: 80
-      targetCPUPercent: 80
     envVars:
     - fromGroup: temporal-shared
     # The worker service needs to wait for the history service to be up first,
@@ -263,7 +245,6 @@ services:
         property: host
   - type: web
     name: temporal-ui
-    autoDeploy: false
     plan: starter
     region: frankfurt
     runtime: docker
@@ -287,7 +268,6 @@ services:
     runtime: go
     buildCommand: go build worker/main.go
     startCommand: ./main
-    autoDeploy: false
     envVars:
     - key: TEMPORAL_CLUSTER_HOST
       fromService:
