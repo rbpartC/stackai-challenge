@@ -64,14 +64,16 @@ async def main():
     print(f"First page of {len(list_resp.namespaces)} namespaces:")
     for namespace in list_resp.namespaces:
         print(f"  Namespace: {namespace.namespace_info.name}")
-
-    print("Attempting to add namespace 'my-namespace'")
-    await client.workflow_service.register_namespace(
-        RegisterNamespaceRequest(
-            namespace="default",
-            workflow_execution_retention_period=timedelta(days=1)
+    if "default" in [ns.namespace_info.name for ns in list_resp.namespaces]:
+        print("Namespace 'default' already exists")
+    else:
+        print("Attempting to add namespace 'default'")
+        await client.workflow_service.register_namespace(
+            RegisterNamespaceRequest(
+                namespace="default",
+                workflow_execution_retention_period=timedelta(days=1)
+            )
         )
-    )
     print("Registration complete (may take a few seconds to be usable)")
     result = await client.start_workflow(
         OrchestrationWorkflow.run,
