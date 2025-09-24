@@ -69,12 +69,12 @@ services:
     envVars:
       - key: POSTGRESQL_SEEDS
         fromService:
-          name: pgbouncer
+          name: pgbouncerff
           type: web
           property: host
       - key: POSTGRESQL_PORT
         fromService:
-          name: pgbouncer
+          name: pgbouncerff
           type: web
           property: port
       - key: POSTGRESQL_USER
