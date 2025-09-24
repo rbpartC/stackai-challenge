@@ -111,7 +111,7 @@ setup_postgres_schema() {
             -u "${POSTGRES_USER}" \
             -p "${POSTGRES_PORT}" \
             --db "${POSTGRES_DBNAME}" \
-            --tls="true" \
+            --tls="false" \
             --tls-disable-host-verification="true" \
             create
     fi
