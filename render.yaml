@@ -265,7 +265,11 @@ services:
     dockerfilePath: ./web/Dockerfile
     envVars:
     - key: PORT
-      value: 8088
+      # For render
+      value: 8080
+    - key: TEMPORAL_UI_PORT
+      # For temporal
+      value: 8080
     - key: TEMPORAL_PERMIT_WRITE_API
       value: "true"
     - key: TEMPORAL_GRPC_HOST
