@@ -73,7 +73,7 @@ services:
     plan: starter
     region: frankfurt
     runtime: docker
-    dockerfilePath: ./temporal-cluster/server/Dockerfile
+    dockerfilePath: ./server/Dockerfile
     envVars:
     - fromGroup: temporal-shared
     - key: SERVICES
