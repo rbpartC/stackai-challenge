@@ -36,7 +36,7 @@ class OrchestrationWorkflow:
         seq_result = await workflow.execute_activity(
             add_one,
             validated_inputs[0],
-            schedule_to_close_timeout=5
+            schedule_to_close_timeout=timedelta(seconds=5)
         )
 
         # Parallel execution: multiply_by_two to the rest
@@ -44,7 +44,7 @@ class OrchestrationWorkflow:
             workflow.execute_activity(
                 multiply_by_two,
                 inp,
-                schedule_to_close_timeout=5
+                schedule_to_close_timeout=timedelta(seconds=5)
             )
             for inp in validated_inputs[1:]
         ]
