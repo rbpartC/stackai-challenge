@@ -33,6 +33,8 @@ persistence:
                     host: "{{ default .Env.ES_SEEDS "" }}:{{ default .Env.ES_PORT "9200" }}"
                 username: "{{ default .Env.ES_USER "" }}"
                 password: "{{ default .Env.ES_PWD "" }}"
+                indices:
+                    visibility: "{{ default .Env.ES_VIS_INDEX "temporal_visibility_v1_dev" }}"
 
 services:
     frontend:
