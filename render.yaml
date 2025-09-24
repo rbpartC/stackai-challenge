@@ -73,7 +73,7 @@ services:
       - key: DYNAMIC_CONFIG_FILE_PATH
         value: /etc/temporal/config/config_template.yaml
       - key: DB
-        value: postgresql12
+        value: postgres12
       - key: POSTGRESQL_SEEDS
         fromService:
           name: pgbouncerff
@@ -96,7 +96,6 @@ services:
         fromDatabase:
           name: temporal-db
           property: database
-
       - key: ENABLE_ES
         value: "true"
       - key: ES_SEEDS
@@ -104,8 +103,6 @@ services:
           name: elasticsearch
           type: web
           property: host
-
-      # Default es user
       - key: ES_USER
         value: elastic
       - key: ES_PWD
