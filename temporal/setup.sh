@@ -291,23 +291,6 @@ add_custom_search_attributes() {
 # @@@SNIPEND
 }
 
-setup_server(){
-    echo "Temporal CLI address: ${TEMPORAL_ADDRESS}."
-
-    until temporal operator cluster health | grep -q SERVING; do
-        echo "Waiting for Temporal server to start..."
-        sleep 1
-    done
-    echo "Temporal server started."
-
-    if [[ ${SKIP_DEFAULT_NAMESPACE_CREATION} != true ]]; then
-        register_default_namespace
-        if [[ ${SKIP_ADD_CUSTOM_SEARCH_ATTRIBUTES} != true ]]; then
-            add_custom_search_attributes
-        fi
-    fi
-}
-
 # === Main ===
 
 echo "Starting Temporal server setup."
@@ -324,7 +307,4 @@ if [[ ${ENABLE_ES} == true ]]; then
     setup_es_index
 fi
 
-# Run this func in parallel process. It will wait for server to start and then run required steps.
-setup_server &
-
-tail -f /dev/null
+exit 0

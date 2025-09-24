@@ -61,6 +61,59 @@ services:
         generateValue: true
 
   - type: web
+    name: temporal-setup
+    region: frankfurt
+    plan: starter
+    runtime: docker
+    dockerfilePath: ./temporal/setup.Dockerfile
+
+    envVars:
+      - key: SERVICES
+        value: history
+      - key: USE_INTERNAL_FRONTEND
+        value: "true"
+      - key: DYNAMIC_CONFIG_FILE_PATH
+        value: /etc/temporal/config/config_template.yaml
+      - key: DB
+        value: postgres12
+      - key: POSTGRES_SEEDS
+        fromService:
+          name: pgbouncerff
+          type: pserv
+          property: host
+      - key: POSTGRES_PORT
+        fromService:
+          name: pgbouncerff
+          type: pserv
+          property: port
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: temporal-db
+          property: user
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+          name: temporal-db
+          property: password
+      - key: POSTGRES_DBNAME
+        fromDatabase:
+          name: temporal-db
+          property: database
+      - key: ENABLE_ES
+        value: "true"
+      - key: ES_SEEDS
+        fromService:
+          name: elasticsearch
+          type: web
+          property: host
+      - key: ES_USER
+        value: elastic
+      - key: ES_PWD
+        fromService:
+          name: elasticsearch
+          type: web
+          envVarKey: ELASTIC_PASSWORD
+
+  - type: web
     name: temporal-history
     region: frankfurt
     plan: starter
