@@ -102,31 +102,20 @@ services:
       fromDatabase:
         name: temporal-core
         property: host
-    - key: VISIBILITY_DBNAME
-      fromService:
-        name: elasticsearch
-        type: web
-        property: database
-    - key: VISIBILITY_DB_PORT
-      fromService:
-        name: elasticsearch
-        type: web
-        property: port
-    - key: VISIBILITY_POSTGRES_USER
-      fromService:
-        name: elasticsearch
-        type: web
-        property: user
-    - key: VISIBILITY_POSTGRES_PWD
-      fromService:
-        name: elasticsearch
-        type: web
-        property: password
-    - key: VISIBILITY_POSTGRES_SEEDS
+    - key: ENABLE_ES
+      value: "true"
+    - key: ES_SEEDS
       fromService:
         name: elasticsearch
         type: web
         property: host
+    - key: ES_USER
+      value: elastic
+    - key: ES_PWD
+      fromService:
+        name: elasticsearch
+        type: web
+        envVarKey: ELASTIC_PASSWORD
   
   - type: web
     name: temporal-ui
