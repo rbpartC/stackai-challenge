@@ -4,6 +4,7 @@ frontend.enableClientVersionCheck:
 history.persistenceMaxQPS:
 - value: 3000
   constraints: {}
+  
 frontend.persistenceMaxQPS:
 - value: 3000
   constraints: {}
