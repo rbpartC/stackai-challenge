@@ -5,13 +5,13 @@ envVarGroups:
         value: test-value
       
 databases:
-  - name: temporal-db
+  - name: temporal-core
     # Core state db
     postgresMajorVersion: '17' 
     region: frankfurt
     plan: free
-    databaseName: temporaldb
-    user: temporaldbuser
+    databaseName: temporal
+    user: temporal
     ipAllowList:
       - source: 0.0.0.0/0
         description: everywhere
@@ -29,7 +29,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name:  temporal-db
+          name:  temporal-core
           property: connectionString
       - key: POOL_MODE
         value: transaction
@@ -59,124 +59,104 @@ services:
         value: "-Xms512m -Xmx512m"
       - key: ELASTIC_PASSWORD
         generateValue: true
-
-  # Activate only once to setup DB schema
-  # - type: web
-  #   name: temporal-setup
-  #   region: frankfurt
-  #   plan: starter
-  #   runtime: docker
-  #   dockerfilePath: ./temporal/setup/Dockerfile
-
-  #   envVars:
-  #     - key: SERVICES
-  #       value: history
-  #     - key: USE_INTERNAL_FRONTEND
-  #       value: "true"
-  #     - key: DYNAMIC_CONFIG_FILE_PATH
-  #       value: /etc/temporal/config/config_template.yaml
-  #     - key: DB
-  #       value: postgres12
-  #     - key: POSTGRES_SEEDS
-  #       fromService:
-  #         name: pgbouncerff
-  #         type: pserv
-  #         property: host
-  #     - key: POSTGRES_PORT
-  #       fromService:
-  #         name: pgbouncerff
-  #         type: pserv
-  #         property: port
-  #     - key: POSTGRES_USER
-  #       fromDatabase:
-  #         name: temporal-db
-  #         property: user
-  #     - key: POSTGRES_PASSWORD
-  #       fromDatabase:
-  #         name: temporal-db
-  #         property: password
-  #     - key: POSTGRES_DBNAME
-  #       fromDatabase:
-  #         name: temporal-db
-  #         property: database
-  #     - key: ENABLE_ES
-  #       value: "true"
-  #     - key: ES_SEEDS
-  #       fromService:
-  #         name: elasticsearch
-  #         type: web
-  #         property: host
-  #     - key: ES_USER
-  #       value: elastic
-  #     - key: ES_PWD
-  #       fromService:
-  #         name: elasticsearch
-  #         type: web
-  #         envVarKey: ELASTIC_PASSWORD
-
+  
   - type: pserv
-    name: temporal-history
-    region: frankfurt
+    name: temporal
+    autoDeploy: false
     plan: starter
+    region: frankfurt
     runtime: docker
-    dockerfilePath: ./temporal/server/Dockerfile
-
+    dockerfilePath: ./server/Dockerfile
     envVars:
-      - key: SERVICES
-        value: history
-      - key: USE_INTERNAL_FRONTEND
-        value: "true"
-      - key: DYNAMIC_CONFIG_FILE_PATH
-        value: /etc/temporal/config/config_template.yaml
-      - key: DB
-        value: postgres12
-      - key: POSTGRES_SEEDS
-        fromService:
-          name: pgbouncerff
-          type: pserv
-          property: host
-      - key: POSTGRES_PORT
-        fromService:
-          name: pgbouncerff
-          type: pserv
-          property: port
-      - key: POSTGRES_USER
-        fromDatabase:
-          name: temporal-db
-          property: user
-      - key: POSTGRES_PASSWORD
-        fromDatabase:
-          name: temporal-db
-          property: password
-      - key: POSTGRES_DBNAME
-        fromDatabase:
-          name: temporal-db
-          property: database
-      - key: ENABLE_ES
-        value: "true"
-      - key: ES_SEEDS
-        fromService:
-          name: elasticsearch
-          type: web
-          property: host
-      - key: ES_USER
-        value: elastic
-      - key: ES_PWD
-        fromService:
-          name: elasticsearch
-          type: web
-          envVarKey: ELASTIC_PASSWORD
+    - key: SERVICES
+      value: frontend,matching,history,worker
+    - key: DYNAMIC_CONFIG_FILE_PATH
+      value: /etc/temporal/dynamicconfig.yaml
+    - key: BIND_ON_IP
+      value: 0.0.0.0
+    - key: TEMPORAL_BROADCAST_ADDRESS
+      value: 0.0.0.0
+    - key: TEMPORAL_CLI_ADDRESS
+      value: localhost:7233
+    - key: SKIP_POSTGRES_DB_CREATION
+      value: "true"
+    - key: DB
+      value: postgresql
+    - key: DBNAME
+      fromDatabase:
+        name: temporal-core
+        property: database
+    - key: DB_PORT
+      fromDatabase:
+        name: temporal-core
+        property: port
+    - key: POSTGRES_USER
+      fromDatabase:
+        name: temporal-core
+        property: user
+    - key: POSTGRES_PWD
+      fromDatabase:
+        name: temporal-core
+        property: password
+    - key: POSTGRES_SEEDS
+      fromDatabase:
+        name: temporal-core
+        property: host
+    - key: VISIBILITY_DBNAME
+      fromService:
+        name: elasticsearch
+        type: web
+        property: database
+    - key: VISIBILITY_DB_PORT
+      fromService:
+        name: elasticsearch
+        type: web
+        property: port
+    - key: VISIBILITY_POSTGRES_USER
+      fromService:
+        name: elasticsearch
+        type: web
+        property: user
+    - key: VISIBILITY_POSTGRES_PWD
+      fromService:
+        name: elasticsearch
+        type: web
+        property: password
+    - key: VISIBILITY_POSTGRES_SEEDS
+      fromService:
+        name: elasticsearch
+        type: web
+        property: host
+  
+  - type: web
+    name: temporal-ui
+    autoDeploy: false
+    plan: starter
+    region: frankfurt
+    runtime: docker
+    dockerfilePath: ./web/Dockerfile
+    envVars:
+    - key: PORT
+      value: 8088
+    - key: TEMPORAL_PERMIT_WRITE_API
+      value: "true"
+    - key: TEMPORAL_GRPC_HOST
+      fromService:
+        name: temporal
+        type: pserv
+        property: host
 
-  # - type: web
-  #   name: temporal-ui
-  #   region: frankfurt
-  #   plan: free
-  #   runtime: docker
-  #   image:
-  #     url: temporalio/ui:latest
-  #   envVars:
-  #     - key: TEMPORAL_ADRESS
-  #       fromService:
-  #         name: temporal-server
-  #         type: pserv
-  #         property: host
+  - type: worker
+    repo: https://github.com/render-examples/sample-temporal-app
+    name: app-worker
+    plan: starter
+    region: frankfurt
+    runtime: go
+    buildCommand: go build worker/main.go
+    startCommand: ./main
+    envVars:
+    - key: TEMPORAL_CLUSTER_HOST
+      fromService:
+        name: temporal
+        type: pserv
+        property: host
