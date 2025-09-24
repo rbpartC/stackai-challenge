@@ -102,6 +102,7 @@ setup_postgres_schema() {
     SCHEMA_DIR=${TEMPORAL_HOME}/schema/postgresql/${POSTGRES_VERSION_DIR}/temporal/versioned
     # Create database only if its name is different from the user name. Otherwise PostgreSQL container itself will create database.
     if [[ ${POSTGRES_DBNAME} != "${POSTGRES_USER}" && ${SKIP_DB_CREATE} != true ]]; then
+        echo "Creating database ${POSTGRES_DBNAME}."
         /usr/local/bin/temporal-sql-tool \
             --plugin ${DB} \
             --ep "${POSTGRES_SEEDS}" \
@@ -112,6 +113,7 @@ setup_postgres_schema() {
             --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
             create
     fi
+    echo "Settiong schema"
     /usr/local/bin/temporal-sql-tool \
         --plugin ${DB} \
         --ep "${POSTGRES_SEEDS}" \
@@ -121,6 +123,7 @@ setup_postgres_schema() {
         --tls="${POSTGRES_TLS_ENABLED}" \
         --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
         setup-schema -v 0.0
+    echo "Updating schema"
     /usr/local/bin/temporal-sql-tool \
         --plugin ${DB} \
         --ep "${POSTGRES_SEEDS}" \
