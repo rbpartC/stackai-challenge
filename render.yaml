@@ -1,5 +1,5 @@
 envVarGroups:
-  - name: temporal
+  - name: databases
     envVars:
       - key : TEST
         value: test-value
@@ -60,8 +60,8 @@ services:
       - key: ELASTIC_PASSWORD
         generateValue: true
 
-  - type: pserv
-    name: temporal-server
+  - type: web
+    name: temporal-frontend
     region: frankfurt
     plan: starter
     runtime: docker
@@ -69,6 +69,8 @@ services:
       url: temporalio/server:1.26.3.0
 
     envVars:
+      - key: SERVICES
+        value: frontend
       - key: DB
         value: postgresql12
       - key: POSTGRESQL_SEEDS
