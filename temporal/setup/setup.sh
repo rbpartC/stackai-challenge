@@ -23,7 +23,7 @@ set -eu -o pipefail
 
 
 : "${POSTGRES_TLS_ENABLED:=false}"
-: "${POSTGRES_TLS_DISABLE_HOST_VERIFICATION:=false}"
+: "${POSTGRES_TLS_DISABLE_HOST_VERIFICATION:=true}"
 : "${POSTGRES_TLS_CERT_FILE:=}"
 : "${POSTGRES_TLS_KEY_FILE:=}"
 : "${POSTGRES_TLS_CA_FILE:=}"
@@ -110,10 +110,6 @@ setup_postgres_schema() {
             --db "${POSTGRES_DBNAME}" \
             --tls="${POSTGRES_TLS_ENABLED}" \
             --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
-            --tls-cert-file "${POSTGRES_TLS_CERT_FILE}" \
-            --tls-key-file "${POSTGRES_TLS_KEY_FILE}" \
-            --tls-ca-file "${POSTGRES_TLS_CA_FILE}" \
-            --tls-server-name "${POSTGRES_TLS_SERVER_NAME}" \
             create
     fi
     /usr/local/bin/temporal-sql-tool \
@@ -124,10 +120,6 @@ setup_postgres_schema() {
         --db "${POSTGRES_DBNAME}" \
         --tls="${POSTGRES_TLS_ENABLED}" \
         --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
-        --tls-cert-file "${POSTGRES_TLS_CERT_FILE}" \
-        --tls-key-file "${POSTGRES_TLS_KEY_FILE}" \
-        --tls-ca-file "${POSTGRES_TLS_CA_FILE}" \
-        --tls-server-name "${POSTGRES_TLS_SERVER_NAME}" \
         setup-schema -v 0.0
     /usr/local/bin/temporal-sql-tool \
         --plugin ${DB} \
@@ -137,10 +129,6 @@ setup_postgres_schema() {
         --db "${POSTGRES_DBNAME}" \
         --tls="${POSTGRES_TLS_ENABLED}" \
         --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
-        --tls-cert-file "${POSTGRES_TLS_CERT_FILE}" \
-        --tls-key-file "${POSTGRES_TLS_KEY_FILE}" \
-        --tls-ca-file "${POSTGRES_TLS_CA_FILE}" \
-        --tls-server-name "${POSTGRES_TLS_SERVER_NAME}" \
         update-schema -d "${SCHEMA_DIR}"
 
     # Only setup visibility schema if ES is not enabled
