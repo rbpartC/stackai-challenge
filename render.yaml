@@ -61,7 +61,7 @@ services:
         generateValue: true
 
   - type: web
-    name: temporal-frontend
+    name: temporal-history
     region: frankfurt
     plan: starter
     runtime: docker
@@ -69,7 +69,9 @@ services:
 
     envVars:
       - key: SERVICES
-        value: frontend
+        value: history
+      - key: USE_INTERNAL_FRONTEND
+        value: "true"
       - key: DYNAMIC_CONFIG_FILE_PATH
         value: /etc/temporal/config/config_template.yaml
       - key: DB
