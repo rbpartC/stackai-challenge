@@ -8,7 +8,6 @@ set -eu -o pipefail
 : "${SKIP_SCHEMA_SETUP:=false}"
 : "${SKIP_DB_CREATE:=false}"
 
-: "${DBNAME:=temporal}"
 : "${VISIBILITY_DBNAME:=temporal_visibility}"
 : "${POSTGRES_PORT:=5432}"
 
@@ -20,6 +19,8 @@ set -eu -o pipefail
 : "${POSTGRES_SEEDS:=}"
 : "${POSTGRES_USER:=}"
 : "${POSTGRES_PWD:=}"
+: "${POSTGRES_DBNAME:=}"
+
 
 : "${POSTGRES_TLS_ENABLED:=false}"
 : "${POSTGRES_TLS_DISABLE_HOST_VERIFICATION:=false}"
@@ -100,13 +101,13 @@ setup_postgres_schema() {
     POSTGRES_VERSION_DIR=v12
     SCHEMA_DIR=${TEMPORAL_HOME}/schema/postgresql/${POSTGRES_VERSION_DIR}/temporal/versioned
     # Create database only if its name is different from the user name. Otherwise PostgreSQL container itself will create database.
-    if [[ ${DBNAME} != "${POSTGRES_USER}" && ${SKIP_DB_CREATE} != true ]]; then
+    if [[ ${POSTGRES_DBNAME} != "${POSTGRES_USER}" && ${SKIP_DB_CREATE} != true ]]; then
         /usr/local/bin/temporal-sql-tool \
             --plugin ${DB} \
             --ep "${POSTGRES_SEEDS}" \
             -u "${POSTGRES_USER}" \
             -p "${POSTGRES_PORT}" \
-            --db "${DBNAME}" \
+            --db "${POSTGRES_DBNAME}" \
             --tls="${POSTGRES_TLS_ENABLED}" \
             --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
             --tls-cert-file "${POSTGRES_TLS_CERT_FILE}" \
@@ -120,7 +121,7 @@ setup_postgres_schema() {
         --ep "${POSTGRES_SEEDS}" \
         -u "${POSTGRES_USER}" \
         -p "${POSTGRES_PORT}" \
-        --db "${DBNAME}" \
+        --db "${POSTGRES_DBNAME}" \
         --tls="${POSTGRES_TLS_ENABLED}" \
         --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
         --tls-cert-file "${POSTGRES_TLS_CERT_FILE}" \
@@ -133,7 +134,7 @@ setup_postgres_schema() {
         --ep "${POSTGRES_SEEDS}" \
         -u "${POSTGRES_USER}" \
         -p "${POSTGRES_PORT}" \
-        --db "${DBNAME}" \
+        --db "${POSTGRES_DBNAME}" \
         --tls="${POSTGRES_TLS_ENABLED}" \
         --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
         --tls-cert-file "${POSTGRES_TLS_CERT_FILE}" \
