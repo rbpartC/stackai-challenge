@@ -310,6 +310,8 @@ setup_server(){
 
 # === Main ===
 
+echo "Starting Temporal server setup."
+
 if [[ ${SKIP_SCHEMA_SETUP} != true ]]; then
     validate_db_env
     wait_for_db
