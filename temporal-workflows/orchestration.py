@@ -78,7 +78,7 @@ async def main():
     result = await client.start_workflow(
         OrchestrationWorkflow.run,
         [1, 2, 3],
-        id="example-workflow-id",
+        id="orchestration-workflow-id-2",
         task_queue="example-task-queue"
     )
     print("Workflow result:", result)
