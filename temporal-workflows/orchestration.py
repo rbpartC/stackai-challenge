@@ -49,7 +49,8 @@ class OrchestrationWorkflow:
             )
             for inp in validated_inputs[1:]
         ]
-        parallel_results = await workflow.await_all(*parallel_futures)
+        
+        parallel_results = await asyncio.gather(*parallel_futures)
 
         # Collect all results
         all_results = [seq_result.result] + [r.result for r in parallel_results]
