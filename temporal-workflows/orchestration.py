@@ -59,7 +59,7 @@ class OrchestrationWorkflow:
 
 # --- Example client code to start workflow (for reference) ---
 async def main():
-    client = get_client()
+    client = await get_client()
     list_resp = await client.workflow_service.list_namespaces(ListNamespacesRequest())
     print(f"First page of {len(list_resp.namespaces)} namespaces:")
     for namespace in list_resp.namespaces:
