@@ -65,7 +65,7 @@ services:
     region: frankfurt
     plan: starter
     runtime: docker
-    dockerfilePath: ./temporal/setup.Dockerfile
+    dockerfilePath: ./temporal/setup/Dockerfile
 
     envVars:
       - key: SERVICES
@@ -118,7 +118,7 @@ services:
     region: frankfurt
     plan: starter
     runtime: docker
-    dockerfilePath: ./temporal/Dockerfile
+    dockerfilePath: ./temporal/server/Dockerfile
 
     envVars:
       - key: SERVICES
