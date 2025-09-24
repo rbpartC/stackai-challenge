@@ -111,16 +111,16 @@ services:
           type: web
           envVarKey: ELASTIC_PASSWORD
 
-  - type: web
-    name: temporal-ui
-    region: frankfurt
-    plan: free
-    runtime: docker
-    image:
-      url: temporalio/ui:latest
-    envVars:
-      - key: TEMPORAL_ADRESS
-        fromService:
-          name: temporal-server
-          type: pserv
-          property: host
+  # - type: web
+  #   name: temporal-ui
+  #   region: frankfurt
+  #   plan: free
+  #   runtime: docker
+  #   image:
+  #     url: temporalio/ui:latest
+  #   envVars:
+  #     - key: TEMPORAL_ADRESS
+  #       fromService:
+  #         name: temporal-server
+  #         type: pserv
+  #         property: host
