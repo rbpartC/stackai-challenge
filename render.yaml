@@ -21,11 +21,11 @@ services:
   - type: pserv
     name: pgbouncerff
     runtime: docker
-    # TODO: move to frankfurt
+    # NOTE: service in != regions can't communicate privately ?
     region: frankfurt
     plan: standard
-    repo: https://github.com/render-oss/docker-pgbouncer
     # TODO: Should be pinned to a version
+    repo: https://github.com/render-oss/docker-pgbouncer
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -70,12 +70,12 @@ services:
       - key: POSTGRESQL_SEEDS
         fromService:
           name: pgbouncerff
-          type: web
+          type: pserv
           property: host
       - key: POSTGRESQL_PORT
         fromService:
           name: pgbouncerff
-          type: web
+          type: pserv
           property: port
       - key: POSTGRESQL_USER
         fromDatabase:
