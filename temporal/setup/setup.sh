@@ -7,6 +7,8 @@ set -eu -o pipefail
 : "${DB:=cassandra}"
 : "${SKIP_SCHEMA_SETUP:=false}"
 : "${SKIP_DB_CREATE:=false}"
+: "${DBNAME:=temporal}"
+
 
 : "${VISIBILITY_DBNAME:=temporal_visibility}"
 : "${POSTGRES_PORT:=5432}"
