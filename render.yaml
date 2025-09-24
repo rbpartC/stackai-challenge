@@ -60,13 +60,17 @@ services:
       - key: ELASTIC_PASSWORD
         generateValue: true
 
-  - type: web
-    name: temporal-frontend
+  - type: pserv
+    name: temporal-server
     region: frankfurt
-    plan: free 
+    plan: starter
     runtime: docker
-    
+    image: 
+      url: temporalio/server:1.26.3.0
+
     envVars:
+      - key: DB
+        value: postgresql12
       - key: POSTGRESQL_SEEDS
         fromService:
           name: pgbouncerff
@@ -98,6 +102,7 @@ services:
           type: web
           property: host
 
+      # Default es user
       - key: ES_USER
         value: elastic
       - key: ES_PWD
@@ -106,3 +111,16 @@ services:
           type: web
           envVarKey: ELASTIC_PASSWORD
 
+  - type: web
+    name: temporal-ui
+    region: frankfurt
+    plan: free
+    runtime: docker
+    image:
+      url: temporalio/ui:latest
+    envVars:
+      - key: TEMPORAL_ADRESS
+        fromService:
+          name: temporal-server
+          type: pserv
+          property: host
