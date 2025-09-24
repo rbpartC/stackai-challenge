@@ -84,12 +84,12 @@ services:
       value: "true"
     - key: ES_SEEDS
       fromService:
-        name: temporal-elasticsearch
+        name: elasticsearch
         type: pserv
         property: host
     - key: ES_PWD
       fromService:
-        name: temporal-elasticsearch
+        name: elasticsearch
         type: pserv
         envVarKey: ELASTIC_PASSWORD
     - key: DBNAME
