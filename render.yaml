@@ -48,7 +48,7 @@ services:
       - key: DEFAULT_POOL_SIZE
         value: 50
 
-  - type: web
+  - type: pserv
     # This is the visibility DB
     name: elasticsearch
     region: frankfurt
