@@ -20,11 +20,7 @@ persistence:
                 maxConnLifetime: {{ default .Env.SQL_MAX_CONN_TIME "1h" }}
                 tls:
                     enabled: {{ default .Env.SQL_TLS_ENABLED "true" }}
-                    сaFile: {{ default .Env.SQL_CA "" }}
-                    certFile: {{ default .Env.SQL_CERT "" }}
-                    keyFile: {{ default .Env.SQL_CERT_KEY "" }}
                     enableHostVerification: {{ default .Env.SQL_HOST_VERIFICATION "false" }}
-                    serverName: {{ default .Env.SQL_HOST_NAME "" }}
         es-visibility:
             elasticsearch:
                 version: {{ default .Env.ES_VERSION "v7" }}
