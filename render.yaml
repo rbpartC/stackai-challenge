@@ -113,7 +113,7 @@ services:
           type: web
           envVarKey: ELASTIC_PASSWORD
 
-  - type: web
+  - type: pserv
     name: temporal-history
     region: frankfurt
     plan: starter
