@@ -111,8 +111,8 @@ setup_postgres_schema() {
             -u "${POSTGRES_USER}" \
             -p "${POSTGRES_PORT}" \
             --db "${POSTGRES_DBNAME}" \
-            --tls="${POSTGRES_TLS_ENABLED}" \
-            --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
+            --tls="true" \
+            --tls-disable-host-verification="true" \
             create
     fi
     echo "Settiong schema"
