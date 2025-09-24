@@ -52,6 +52,7 @@ set -eu -o pipefail
 : "${DEFAULT_NAMESPACE_RETENTION:=24h}"
 
 : "${SKIP_ADD_CUSTOM_SEARCH_ATTRIBUTES:=false}"
+: "${SKIP_DB_CREATE:=true}"
 
 # === Helper functions ===
 
@@ -111,8 +112,8 @@ setup_postgres_schema() {
             -u "${POSTGRES_USER}" \
             -p "${POSTGRES_PORT}" \
             --db "${POSTGRES_DBNAME}" \
-            --tls="false" \
-            --tls-disable-host-verification="true" \
+            --tls="${POSTGRES_TLS_ENABLED}" \
+            --tls-disable-host-verification="${POSTGRES_TLS_DISABLE_HOST_VERIFICATION}" \
             create
     fi
     echo "Settiong schema"
