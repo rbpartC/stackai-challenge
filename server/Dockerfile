@@ -4,5 +4,5 @@ FROM temporalio/auto-setup:1.14.3
 COPY config/dynamicconfig.yaml /etc/temporal/dynamicconfig.yaml
 COPY config/dynamicconfig_es.yaml /etc/temporal/dynamicconfig_es.yaml
 COPY config/config_template.yaml /etc/temporal/config/config_template.yaml
-COPY server/auto-setup/auto-setup.sh /etc/temporal/auto-setup.sh
+COPY server/auto-setup.sh /etc/temporal/auto-setup.sh
 COPY server/.bashrc /home/temporal/.bashrc
