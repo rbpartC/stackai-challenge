@@ -25,6 +25,11 @@ async def add_one(input_data: InputData) -> ResultData:
 async def multiply_by_two(input_data: InputData) -> ResultData:
     return ResultData(result=input_data.value * 2)
 
+@activity.defn
+async def sum_values(input_data: List[InputData]) -> ResultData:
+    total = sum(item.value for item in input_data)
+    return ResultData(result=total)
+
 # --- Workflow ---
 
 @workflow.defn
@@ -54,8 +59,8 @@ class OrchestrationWorkflow:
         parallel_results = await asyncio.gather(*parallel_futures)
 
         # Collect all results
-        all_results = [seq_result.result] + [r.result for r in parallel_results]
-        return all_results
+        all_results = [seq_result] + parallel_results
+        return (await sum_values([InputData(value=r) for r in all_results])).result
 
 # --- Example client code to start workflow (for reference) ---
 async def main():
@@ -81,7 +86,7 @@ async def main():
         id=f"orchestration-workflow-id-{uuid.uuid4()}",
         task_queue="example-task-queue"
     )
-    print("Workflow result:", result)
+    print("Workflow result:", result.result())
     
 
 
