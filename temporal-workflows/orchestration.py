@@ -12,8 +12,12 @@ import uuid
 class InputData(BaseModel):
     value: Annotated[int, Field(strict=True, ge=0)]  # Non-negative integer
 
+
 class ResultData(BaseModel):
     result: int
+
+    def as_input(self) -> InputData:
+        return InputData(value=self.result)
 
 # --- Activities ---
 
@@ -62,7 +66,7 @@ class OrchestrationWorkflow:
         all_results = [seq_result] + parallel_results
         final_result = await workflow.execute_activity(
             sum_values,
-            all_results,
+            [res.as_input() for res in all_results],
             schedule_to_close_timeout=timedelta(seconds=5)
         )
         return final_result.result
