@@ -1,6 +1,6 @@
 from temporalio.worker import Worker
 import asyncio
-from orchestration import OrchestrationWorkflow, add_one, multiply_by_two
+from orchestration import OrchestrationWorkflow, add_one, multiply_by_two, sum_values
 from client import get_client
 from concurrent.futures.thread import ThreadPoolExecutor
 
@@ -11,7 +11,7 @@ async def main():
             client,
             task_queue="example-task-queue",
             workflows=[OrchestrationWorkflow],
-            activities=[add_one, multiply_by_two],
+            activities=[add_one, multiply_by_two, sum_values],
             activity_executor=executor,
         )
         await worker.run()
