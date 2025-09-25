@@ -13,6 +13,7 @@ async def main():
             workflows=[OrchestrationWorkflow],
             activities=[add_one, multiply_by_two, sum_values],
             activity_executor=executor,
+            use_worker_versioning=True,
         )
         await worker.run()
 
