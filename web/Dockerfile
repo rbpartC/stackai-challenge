@@ -1,3 +1,5 @@
-FROM temporalio/web:1.13.0
+FROM temporalio/ui:2.40.1
 
-ENTRYPOINT ["/bin/sh", "-c", "TEMPORAL_GRPC_ENDPOINT=$TEMPORAL_GRPC_HOST:7233 node server.js"]
+EXPOSE 8080
+
+ENTRYPOINT ["/bin/sh", "-c", "TEMPORAL_ADDRESS=$TEMPORAL_GRPC_HOST:7233 && ./start-ui-server.sh"]
