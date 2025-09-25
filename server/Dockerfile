@@ -1,4 +1,4 @@
-FROM temporalio/server:1.26.3
+FROM temporalio/server:1.28.1
 
 # Docker context is set to the root of this repo
 COPY config/dynamicconfig.yaml /etc/temporal/dynamicconfig.yaml
