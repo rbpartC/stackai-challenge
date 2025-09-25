@@ -60,7 +60,12 @@ class OrchestrationWorkflow:
 
         # Collect all results
         all_results = [seq_result] + parallel_results
-        return (await sum_values([InputData(value=r) for r in all_results])).result
+        final_result = await workflow.execute_activity(
+            sum_values,
+            all_results,
+            schedule_to_close_timeout=timedelta(seconds=5)
+        )
+        return final_result.result
 
 # --- Example client code to start workflow (for reference) ---
 async def main():
