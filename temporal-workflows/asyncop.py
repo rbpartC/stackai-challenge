@@ -1,5 +1,6 @@
 import asyncio
 from datetime import timedelta
+import time
 from temporalio import workflow, activity
 from temporalio.common import RetryPolicy
 import settings
@@ -31,7 +32,7 @@ class AsyncWorkflow:
                 unreliable_activity,
                 param,
                 task_queue=settings.EXAMPLE_SYNC_QUEUE,
-                start_to_close_timeout=5,
+                start_to_close_timeout=timedelta(seconds=5),
                 retry_policy=retry_policy,
             )
             return result
