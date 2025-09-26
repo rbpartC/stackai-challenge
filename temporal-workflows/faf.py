@@ -25,6 +25,7 @@ class FiringWorkflow:
             ForgettableWorkflow.run,
             validated,
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
+            parent_close_policy=workflow.ParentClosePolicy.ABANDON
         )
         return f"Fired forgettable workflow with run_id {wf.id} without waiting. The ForgettableWorkflow will run in the background for {param} seconds."
 # --- Worker Entrypoint ---
