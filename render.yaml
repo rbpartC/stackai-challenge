@@ -112,9 +112,10 @@ services:
         name: temporal-core
         property: password
     - key: POSTGRES_SEEDS
-      fromDatabase:
-        name: temporal-core
+      fromService:
+        name: pgbouncerff
         property: host
+        type: pserv
 
   - type: pserv
     name: temporal-history
@@ -155,9 +156,10 @@ services:
         name: temporal-core
         property: password
     - key: POSTGRES_SEEDS
-      fromDatabase:
-        name: temporal-core
+      fromService:
+        name: pgbouncerff
         property: host
+        type: pserv
     - key: DB_PORT
       fromDatabase:
         name: temporal-core
@@ -202,9 +204,10 @@ services:
         name: temporal-core
         property: password
     - key: POSTGRES_SEEDS
-      fromDatabase:
-        name: temporal-core
+      fromService:
+        name: pgbouncerff
         property: host
+        type: pserv
     - key: DB_PORT
       fromDatabase:
         name: temporal-core
@@ -255,9 +258,10 @@ services:
         name: temporal-core
         property: password
     - key: POSTGRES_SEEDS
-      fromDatabase:
-        name: temporal-core
+      fromService:
+        name: pgbouncerff
         property: host
+        type: pserv
     - key: DB_PORT
       fromDatabase:
         name: temporal-core
