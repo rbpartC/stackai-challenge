@@ -10,7 +10,7 @@
    - **PG Bouncer**: Launched to provide connection pooling for PostgreSQL, improving performance and reliability.
 
 3. **Initialize databases**
-   - When using the temporal service container, databases are not initialized with their appropriate schemas. You can deploy an admin-tools container and enter it or script the initialization of the databases.
+   - When using the temporal service container, databases are not initialized with their appropriate schemas. You can deploy an admin-tools container and enter it or script the initialization of the databases. The container can be suspended after setting-up/upgrading schemas.
 
 4. **Deploy Temporal Services**
    - **Frontend, History, Matching, Worker**: Each Temporal service is deployed as a separate Docker service using the same Dockerfile but with different `SERVICES` environment variables. This separation allows for independent scaling and fault isolation.
@@ -25,7 +25,7 @@
 - Environment variables are grouped and reused for consistency.  
 - Docker runtime is used for portability and reproducibility.
 
-Unfortunately, it seems that postgres database is not configurable through envVarGroups, otherwise it would be a good way to share the parameters cleanly to the other services.
+Unfortunately, it seems that postgres database is not configurable through envVarGroups, otherwise it would be a good way to share the parameters cleanly to the other services without repeating a lot of env vars.
 ---
 
 ### How to Verify the Cluster is Working

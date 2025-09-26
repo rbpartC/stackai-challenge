@@ -68,7 +68,7 @@ services:
       - key: ELASTIC_PASSWORD
         generateValue: true
 
-  - type: pserv
+  - type: worker
     name: admin-tools
     autoDeploy: false
     plan: starter

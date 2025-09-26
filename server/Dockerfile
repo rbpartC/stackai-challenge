@@ -5,4 +5,3 @@ COPY config/dynamicconfig.yaml /etc/temporal/dynamicconfig.yaml
 COPY config/dynamicconfig_es.yaml /etc/temporal/dynamicconfig_es.yaml
 COPY config/config_template.yaml /etc/temporal/config/config_template.yaml
 COPY server/.bashrc /home/temporal/.bashrc
-COPY server/es_setup_v9 /etc/temporal/es_setup_v9
