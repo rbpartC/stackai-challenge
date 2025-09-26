@@ -3,7 +3,7 @@ from temporalio import workflow, activity
 from temporalio.api.workflowservice.v1 import ListNamespacesRequest, RegisterNamespaceRequest
 from pydantic import BaseModel, ValidationError, Field
 from typing import Annotated, List
-from settings import settings
+import settings
 import asyncio
 
 import uuid
