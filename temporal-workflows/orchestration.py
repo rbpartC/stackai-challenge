@@ -3,7 +3,7 @@ from temporalio import workflow, activity
 from temporalio.api.workflowservice.v1 import ListNamespacesRequest, RegisterNamespaceRequest
 from pydantic import BaseModel, ValidationError, Field
 from typing import Annotated, List
-from client import get_client
+from settings import settings
 import asyncio
 
 import uuid
@@ -72,33 +72,20 @@ class OrchestrationWorkflow:
         return final_result.result
 
 # --- Example client code to start workflow (for reference) ---
+# Simply run this with python orchestration.py from the worker container
+
 async def main():
-    client = await get_client()
-    list_resp = await client.workflow_service.list_namespaces(ListNamespacesRequest())
-    print(f"First page of {len(list_resp.namespaces)} namespaces:")
-    for namespace in list_resp.namespaces:
-        print(f"  Namespace: {namespace.namespace_info.name}")
-    if "default" in [ns.namespace_info.name for ns in list_resp.namespaces]:
-        print("Namespace 'default' already exists")
-    else:
-        print("Attempting to add namespace 'default'")
-        await client.workflow_service.register_namespace(
-            RegisterNamespaceRequest(
-                namespace="default",
-                workflow_execution_retention_period=timedelta(days=1)
-            )
-        )
-    print("Registration complete (may take a few seconds to be usable)")
+    client = settings.get_client()
+
     result = await client.start_workflow(
         OrchestrationWorkflow.run,
         [1, 2, 3],
         id=f"orchestration-workflow-id-{uuid.uuid4()}",
-        task_queue="example-task-queue"
+        task_queue=settings.EXAMPLE_SYNC_QUEUE,
     )
     print("Workflow result:", result.result())
     
 
 
 if __name__ == "__main__":
-    import asyncio
     asyncio.run(main())
