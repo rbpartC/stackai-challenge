@@ -1,3 +1,4 @@
+from pickle import BUILD
 from temporalio.worker import Worker, WorkerDeploymentConfig
 from temporalio.common import VersioningBehavior
 import asyncio
@@ -7,7 +8,7 @@ from concurrent.futures.thread import ThreadPoolExecutor
 
 async def main():
     with ThreadPoolExecutor(max_workers=5) as executor:
-        client = settings.get_client()
+        client = await settings.get_client()
         worker = Worker(
             client,
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
@@ -16,7 +17,8 @@ async def main():
             activity_executor=executor,
             deployment_config=WorkerDeploymentConfig(
                 use_worker_versioning=True,
-                default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE
+                default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE,
+                version=settings.BUILD_ID,
             )
         )
         await worker.run()

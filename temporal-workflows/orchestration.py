@@ -75,7 +75,7 @@ class OrchestrationWorkflow:
 # Simply run this with python orchestration.py from the worker container
 
 async def main():
-    client = settings.get_client()
+    client = await settings.get_client()
 
     result = await client.start_workflow(
         OrchestrationWorkflow.run,
