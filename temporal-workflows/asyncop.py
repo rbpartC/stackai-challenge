@@ -47,7 +47,7 @@ async def main():
     client = await settings.get_client()
     result = await client.start_workflow(
         AsyncWorkflow.run,
-        [1, 2, 3],
+        1,
         id=f"async-workflow-id-{uuid.uuid4()}",
         task_queue=settings.EXAMPLE_SYNC_QUEUE,
     )
