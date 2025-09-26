@@ -41,9 +41,7 @@ class ProcessLargeDatasetWorkflow:
 
         # Continue as new for next chunk
         return await workflow.continue_as_new(
-            dataset_length,
-            end_index,
-            total_processed + processed,
+            args=[dataset_length, end_index, total_processed + processed],
         )
     
 longrunning_workflows = [ProcessLargeDatasetWorkflow]
