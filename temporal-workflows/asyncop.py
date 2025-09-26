@@ -29,6 +29,7 @@ class AsyncWorkflow:
             result = await workflow.execute_activity(
                 unreliable_activity,
                 param,
+                task_queue=settings.EXAMPLE_SYNC_QUEUE,
                 start_to_close_timeout=5,
                 retry_policy=retry_policy,
             )
