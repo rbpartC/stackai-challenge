@@ -1,30 +1,31 @@
 import asyncio
-from datetime import timedelta
-import time
-from temporalio import workflow, activity, exceptions
-from temporalio.common import RetryPolicy
+from pydantic import BaseModel, Field
+from temporalio import workflow
 import settings
 import uuid
 
 # --- Workflow ---
 
+class PositiveInt(BaseModel):
+    value:int = Field(strict=True, gt=0)  # Positive integer
+
 
 @workflow.defn
 class ForgettableWorkflow:
     @workflow.run
-    async def run(self, param: int) -> str:
-        await asyncio.sleep(param)
+    async def run(self, param: PositiveInt) -> str:
+        await asyncio.sleep(param.value)
 
 @workflow.defn
 class FiringWorkflow:
     @workflow.run
-    async def run(self, param: int) -> str:
-        workflow.start_child_workflow(
+    async def run(self, param: PositiveInt) -> str:
+        wf = await workflow.start_child_workflow(
             ForgettableWorkflow.run,
             param,
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
         )
-        return f"Fired forgettable workflow without waiting. The ForgettableWorkflow will run in the background for {param} seconds."
+        return f"Fired forgettable workflow with run_id {wf.id} without waiting. The ForgettableWorkflow will run in the background for {param} seconds."
 # --- Worker Entrypoint ---
 
 faf_workflows = [ForgettableWorkflow, FiringWorkflow]
