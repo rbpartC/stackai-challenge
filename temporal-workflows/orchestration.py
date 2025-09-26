@@ -49,7 +49,6 @@ class OrchestrationWorkflow:
         seq_result: ResultData = await workflow.execute_child_workflow(
             AddOneWorkflow.run,
             validated_inputs[0],
-            id=f"addone-{uuid.uuid4()}",
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
             execution_timeout=timedelta(seconds=10)
         )
@@ -59,7 +58,6 @@ class OrchestrationWorkflow:
             workflow.execute_child_workflow(
                 MultiplyByTwoWorkflow.run,
                 inp,
-                id=f"mult2-{i}-{uuid.uuid4()}",
                 task_queue=settings.EXAMPLE_SYNC_QUEUE,
                 execution_timeout=timedelta(seconds=10)
             )
@@ -72,7 +70,6 @@ class OrchestrationWorkflow:
         final_result: ResultData = await workflow.execute_child_workflow(
             SumValuesWorkflow.run,
             [res.as_input() for res in all_results],
-            id=f"sum-{uuid.uuid4()}",
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
             execution_timeout=timedelta(seconds=10)
         )
