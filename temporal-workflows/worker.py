@@ -2,7 +2,7 @@ from pickle import BUILD
 from temporalio.worker import Worker, WorkerDeploymentConfig, WorkerDeploymentVersion
 from temporalio.common import VersioningBehavior
 import asyncio
-from orchestration import OrchestrationWorkflow, add_one, multiply_by_two, sum_values
+from orchestration import workflows
 import settings
 from concurrent.futures.thread import ThreadPoolExecutor
 
@@ -12,8 +12,7 @@ async def main():
         worker = Worker(
             client,
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
-            workflows=[OrchestrationWorkflow],
-            activities=[add_one, multiply_by_two, sum_values],
+            workflows=workflows,
             activity_executor=executor,
             deployment_config=WorkerDeploymentConfig(
                 use_worker_versioning=True,
