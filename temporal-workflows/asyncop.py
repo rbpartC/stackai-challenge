@@ -24,7 +24,7 @@ class AsyncWorkflow:
     async def run(self, param: int) -> str:
         retry_policy = RetryPolicy(
             initial_interval=timedelta(seconds=1),
-            maximum_interval=10.0,
+            maximum_interval=timedelta(seconds=10),
             maximum_attempts=3
         )
         try:
