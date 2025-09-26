@@ -67,6 +67,47 @@ services:
         value: "-Xms512m -Xmx512m"
       - key: ELASTIC_PASSWORD
         generateValue: true
+
+  - type: pserv
+    name: admin-tools
+    autoDeploy: false
+    plan: starter
+    region: frankfurt
+    runtime: image
+    image:
+      url: temporalio/admin-tools:1.28
+    envVars:
+    - key: DBNAME
+      fromDatabase:
+        name: temporal-core
+        property: database
+    - key: POSTGRES_USER
+      fromDatabase:
+        name: temporal-core
+        property: user
+    - key: POSTGRES_PWD
+      fromDatabase:
+        name: temporal-core
+        property: password
+    - key: POSTGRES_SEEDS
+      fromService:
+        name: pgbouncerff
+        property: host
+        type: pserv
+    - key: DB_PORT
+      fromDatabase:
+        name: temporal-core
+        property: port
+    - key: ES_SEEDS
+      fromService:
+        name: elasticsearch
+        type: pserv
+        property: host
+    - key: ES_PWD
+      fromService:
+        name: elasticsearch
+        type: pserv
+        envVarKey: ELASTIC_PASSWORD
   
   - type: pserv
     name: temporal-frontend
