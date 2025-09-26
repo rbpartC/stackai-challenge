@@ -36,7 +36,7 @@ class AsyncWorkflow:
                 retry_policy=retry_policy,
             )
             return result
-        except asyncio.TimeoutError:
+        except asyncio.exceptions.CancelledError:
             # Timeout recovery logic
             workflow.logger.error("Activity timed out")
             return "Fallback result due to timeout"
