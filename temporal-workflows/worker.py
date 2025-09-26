@@ -13,6 +13,7 @@ async def main():
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
             workflows=workflows,
             activity_executor=executor,
+            workflow_task_executor=executor,
             # deployment_config=WorkerDeploymentConfig(
             #     use_worker_versioning=True,
             #     default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE,
