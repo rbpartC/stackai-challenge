@@ -1,4 +1,3 @@
-from pickle import BUILD
 from temporalio.worker import Worker, WorkerDeploymentConfig, WorkerDeploymentVersion
 from temporalio.common import VersioningBehavior
 import asyncio
@@ -14,11 +13,11 @@ async def main():
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
             workflows=workflows,
             activity_executor=executor,
-            deployment_config=WorkerDeploymentConfig(
-                use_worker_versioning=True,
-                default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE,
-                version=WorkerDeploymentVersion(deployment_name="sync-python-worker",build_id=settings.BUILD_ID),
-            )
+            # deployment_config=WorkerDeploymentConfig(
+            #     use_worker_versioning=True,
+            #     default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE,
+            #     version=WorkerDeploymentVersion(deployment_name="sync-python-worker",build_id=settings.BUILD_ID),
+            # )
         )
         await worker.run()
 
