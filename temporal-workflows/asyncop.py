@@ -42,8 +42,7 @@ class AsyncWorkflow:
             return "Fallback result due to timeout"
         except Exception as err:
             # Error recovery logic
-            workflow.logger.error(f"Activity failed after retries: {err}")
-            return "Fallback result due to failure"
+            return f"Fallback result due to failure: {err}"
 
 # --- Worker Entrypoint ---
 
