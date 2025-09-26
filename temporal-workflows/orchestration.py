@@ -81,6 +81,8 @@ class OrchestrationWorkflow:
 # --- Example client code to start workflow (for reference) ---
 # Simply run this with python orchestration.py from the worker container
 
+workflows = [OrchestrationWorkflow, AddOneWorkflow, MultiplyByTwoWorkflow, SumValuesWorkflow]
+
 async def main():
     client = await settings.get_client()
     result = await client.start_workflow(
