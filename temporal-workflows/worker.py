@@ -2,7 +2,7 @@ from temporalio.worker import Worker, WorkerDeploymentConfig
 from temporalio.common import VersioningBehavior
 import asyncio
 from orchestration import OrchestrationWorkflow, add_one, multiply_by_two, sum_values
-from settings import settings
+import settings
 from concurrent.futures.thread import ThreadPoolExecutor
 
 async def main():
