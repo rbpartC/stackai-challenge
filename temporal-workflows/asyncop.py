@@ -1,4 +1,5 @@
 import asyncio
+from datetime import timedelta
 from temporalio import workflow, activity
 from temporalio.common import RetryPolicy
 import settings
@@ -21,7 +22,7 @@ class AsyncWorkflow:
     @workflow.run
     async def run(self, param: int) -> str:
         retry_policy = RetryPolicy(
-            initial_interval=1.0,
+            initial_interval=timedelta(seconds=1),
             maximum_interval=10.0,
             maximum_attempts=3
         )
