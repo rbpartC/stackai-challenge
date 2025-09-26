@@ -5,6 +5,7 @@ RUN pip install --no-cache-dir temporalio pydantic
 
 COPY temporal-workflows/orchestration.py /app/orchestration.py
 COPY temporal-workflows/asyncop.py /app/asyncop.py
+COPY temporal-workflows/faf.py /app/faf.py
 COPY temporal-workflows/worker.py /app/worker.py
 COPY temporal-workflows/settings.py /app/settings.py
 

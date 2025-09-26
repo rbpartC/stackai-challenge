@@ -102,7 +102,35 @@ Unfortunately, it seems that postgres database is not configurable through envVa
   - Using the free plan for PostgreSQL and standard plan for Elasticsearch may limit scalability and performance.
   - ES is deployed in single-node mode but should be deployed on cluster mode.
 
+### Deliverables
+
+- render.yaml file in this repository
+- live temporal UI : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows
+
 ## Part 2 - Python Temporal Workflows
 
 ### 1 - Orchestration
+
+Example execution : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/72992716-3647-4c94-a639-a98ca8bbfd8d/019984fa-76c7-716d-9eef-6ae588d77835/history
+
+Workflow that coordinates mutltiple workflows.
+Execute addition, then multiplication in parallel of numbers, then synchronize all the outputs and sums the resulsts.
+We also perform simple typing validation with pydantics.
+
+### 2 - 
+
+Example execution : 
+
+Simulated failure of activity with retries fallback result : 
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/c91a41df-eac1-44ea-a8a1-6facf20ac31d/01998525-2a31-7206-9c6c-fd0d29ce56ef/history
+
+Success : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/c91a41df-eac1-44ea-a8a1-6facf20ac31d/01998530-2dc6-7bb9-a524-4b8e93ca5a0e/history
+
+Failure of activity due to timeout but succeed because in bounds of maximum timeout  : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/75488f21-5248-4242-9519-fcbd7c71cc00/01998536-682b-77d6-9481-625c185f2293/history
+
+Failure of activity due to timeout and fallback : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/9426f56a-c708-4bae-98cc-4dad69cf5e23/01998547-79f9-7683-946a-6511529e4415/history
+
+This demonstrate capability to adapt error handling based on the type of error instead of catching everything.
+
+
 

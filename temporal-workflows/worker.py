@@ -3,6 +3,7 @@ from temporalio.common import VersioningBehavior
 import asyncio
 from orchestration import workflows
 from asyncop import async_activities, async_workflows
+from faf import faf_workflows
 import settings
 from concurrent.futures.thread import ThreadPoolExecutor
 
@@ -13,7 +14,7 @@ async def main():
             client,
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
             activities=async_activities,
-            workflows=workflows + async_workflows,
+            workflows=workflows + async_workflows + faf_workflows,
             activity_executor=executor,
             workflow_task_executor=executor,
             # deployment_config=WorkerDeploymentConfig(
