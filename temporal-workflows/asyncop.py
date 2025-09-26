@@ -42,7 +42,7 @@ class AsyncWorkflow:
             return "Fallback result due to timeout"
         except Exception as err:
             # Error recovery logic
-            return f"Fallback result due to failure: {err}"
+            return f"Fallback result due to failure: {type(err)}"
 
 # --- Worker Entrypoint ---
 
