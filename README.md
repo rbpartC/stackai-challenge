@@ -117,7 +117,7 @@ Workflow that coordinates mutltiple workflows.
 Execute addition, then multiplication in parallel of numbers, then synchronize all the outputs and sums the resulsts.
 We also perform simple typing validation with pydantics.
 
-### 2 - 
+### 2 - Async Operations
 
 Example execution : 
 
@@ -133,4 +133,20 @@ Failure of activity due to timeout and fallback : https://temporal-ui-oq8v.onren
 This demonstrate capability to adapt error handling based on the type of error instead of catching everything.
 
 
+### 3 - Fire and foregt 
+
+Example execution :
+
+Firing workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/90499a3b-71d7-4edd-8c6c-7a315b226693/01998562-5bb0-7604-9e2f-5639bd02b981/history
+
+Forgetted workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/34686d1a-e722-4885-8096-18d4cbb58ddb/01998562-5c60-7121-9d71-f32192d6db4c/history
+
+### 4 - Long Running Processes
+
+Initial workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/0436499f-b538-46b1-b798-517f676beea4/01998573-eacf-7cb3-8dd8-061bdc7eb560/history
+
+Continued as new 1 : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/0436499f-b538-46b1-b798-517f676beea4/bb14b72e-f110-45bb-977b-888a2d432b4d/history
+
+Completion : 
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/0436499f-b538-46b1-b798-517f676beea4/83951006-e91e-4f13-ad06-26e4553ac040/history
 
