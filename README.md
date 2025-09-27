@@ -106,8 +106,9 @@ Unfortunately, it seems that postgres database is not configurable through envVa
   - Check that the frontend service is reachable from the UI.
   - Ensure PORT env variable is aligned with the port you want to expose, render scans for the port specified on this env var.
 
-- **Workflow Failures**
+- **Workflow Failures or Not Starting**
   - Review logs for the worker and history services for stack traces or configuration errors.
+  - Ensure versioning/deployement/buildId behavior doesn't cause worker to stop picking up tasks
 
 ---
 
