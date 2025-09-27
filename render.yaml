@@ -11,6 +11,8 @@ envVarGroups:
       value: "9300"
   - name: temporal-shared
     envVars:
+    - key: SQL_CONNECT_ATTRIBUTES
+      value: "binary_parameters=yes"
     - key: DYNAMIC_CONFIG_FILE_PATH
       value: /etc/temporal/dynamicconfig_es.yaml
     - key: ENABLE_ES
@@ -146,6 +148,7 @@ services:
       - key: DEFAULT_POOL_SIZE
         value: 50
 
+  # Elasticsearch for visibility
   - type: pserv
     # This is the visibility DB
     name: elasticsearch
@@ -164,6 +167,7 @@ services:
       - key: ES_JAVA_OPTS
         value: "-Xms512m -Xmx512m"
 
+  # Admin tools - to suspend after migrations
   - type: worker
     name: admin-tools
     autoDeploy: false
@@ -201,6 +205,7 @@ services:
         property: host
     - fromGroup: elasticsearch
   
+  # Frontend service
   - type: pserv
     name: temporal-frontend
     autoDeploy: false
@@ -242,6 +247,7 @@ services:
         property: host
         type: pserv
 
+  # History service
   - type: pserv
     name: temporal-history
     autoDeploy: false
@@ -286,6 +292,7 @@ services:
         name: temporal-core
         property: port
 
+  # Matching service
   - type: pserv
     name: temporal-matching
     autoDeploy: false
@@ -330,6 +337,7 @@ services:
         name: temporal-core
         property: port
 
+  # Worker service - performs maintenance tasks
   - type: worker
     name: temporal-worker
     autoDeploy: false
@@ -380,7 +388,8 @@ services:
       fromDatabase:
         name: temporal-core
         property: port
-        
+
+  # Temporal UI      
   - type: web
     name: temporal-ui
     autoDeploy: false
@@ -403,6 +412,7 @@ services:
         type: pserv
         property: host
 
+  # Demo python worker with example workflows
   - type: worker
     name: temporal-python-worker
     plan: starter

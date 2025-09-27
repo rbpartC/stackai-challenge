@@ -18,6 +18,7 @@ persistence:
                 maxConns: {{ default .Env.SQL_MAX_CONNS "20" }}
                 maxIdleConns: {{ default .Env.SQL_MAX_IDLE_CONNS "20" }}
                 maxConnLifetime: {{ default .Env.SQL_MAX_CONN_TIME "1h" }}
+                connectAttributes: '{{ default .Env.SQL_CONNECT_ATTRIBUTES "" }}'
                 tls:
                     enabled: {{ default .Env.SQL_TLS_ENABLED "false" }}
                     сaFile: {{ default .Env.SQL_CA "" }}

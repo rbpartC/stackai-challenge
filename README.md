@@ -74,7 +74,7 @@ Unfortunately, it seems that postgres database is not configurable through envVa
 ### Common Troubleshooting Steps
 
 - **Service Fails to Start**
-  - Check environment variables, ensure they are properly named and aligned with variables in the temporal config template, especially database and Elasticsearch connection details => sometimes it seems render doesn't sync automatically some variables. Ensure the config template of 
+  - Check environment variables, ensure they are properly named and aligned with variables in the temporal config template, especially database and Elasticsearch connection details => sometimes it seems render doesn't sync automatically some variables on redeployment / variable changes. Ensure the config template of temporal uses the correct env variable names.
   - Ensure dependent services (e.g., database, Elasticsearch) are running and healthy.
 
 - **Database Connection Errors**
