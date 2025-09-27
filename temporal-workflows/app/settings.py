@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 TEMPORAL_HOST: str = os.getenv("TEMPORAL_GRPC_HOST", "localhost")
 TEMPORAL_PORT: int = int(os.getenv("FRONTEND_GRPC_PORT", 7233))
 
-EXAMPLE_SYNC_QUEUE: str = "example-task-queue"
+EXAMPLE_SYNC_QUEUE: str = "example-task-queue-2"
 DEPLOYMENT_NAME: str = "sync-python-worker"
 BUILD_ID: str = os.getenv("RENDER_GIT_COMMIT", "test")
 NAMESPACE: str = os.getenv("TEMPORAL_NAMESPACE", "default")
