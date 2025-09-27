@@ -6,4 +6,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./temporal-workflows/app/* /app/
 
-CMD ["python", "app/worker.py"]
+CMD ["python", "worker.py"]
