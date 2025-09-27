@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from datetime import timedelta
 from typing import Annotated, List
 
@@ -52,6 +53,7 @@ class SumValuesWorkflow:
 class OrchestrationWorkflow:
     @workflow.run
     async def run(self, values: List[int]) -> int:
+        logging.info(f"Starting orchestration with values: {values}")
         validated_inputs = [InputData(value=v) for v in values]
 
         # Sequential execution: add_one to the first value (as child workflow)
