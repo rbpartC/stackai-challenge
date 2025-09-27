@@ -1,6 +1,6 @@
 import asyncio
 from datetime import timedelta
-import time
+
 from temporalio import workflow, activity, exceptions
 from temporalio.common import RetryPolicy
 import settings

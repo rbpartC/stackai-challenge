@@ -1,5 +1,6 @@
 from functools import lru_cache
 from temporalio.client import Client
+import logging
 import os
 
 TEMPORAL_HOST: str = os.getenv("TEMPORAL_HOST", "localhost")
@@ -14,4 +15,6 @@ target_host = f"{TEMPORAL_HOST}:{TEMPORAL_PORT}"
 
 @lru_cache(1)
 async def get_client() -> Client:
-    return await Client.connect(target_host)
+    client = await Client.connect(target_host)
+    logging.info(f"Successfully connected to Temporal server at {target_host}")
+    return client
