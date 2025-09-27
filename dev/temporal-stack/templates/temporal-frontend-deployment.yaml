@@ -44,7 +44,11 @@ spec:
             - name: ES_VERSION
               value: {{ .Values.elasticsearch.version }}
             - name: ES_SCHEME
-              value: "http"            
+              value: "http"
+            - name: SKIP_SCHEMA_SETUP
+              value: "false"
+            - name: SKIP_DB_SETUP
+              value: "false"
             # - name: BIND_ON_IP
             #   value: "0.0.0.0"
 

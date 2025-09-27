@@ -17,7 +17,7 @@ spec:
           image: python-worker:latest
           imagePullPolicy: IfNotPresent
           env:
-            - name: TEMPORAL_HOST
+            - name: TEMPORAL_GRPC_HOST
               value: {{ .Values.temporal.frontend.host }}
             - name: TEMPORAL_PORT
               value: "{{ .Values.temporal.frontend.grpcPort }}"
