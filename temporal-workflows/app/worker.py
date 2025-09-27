@@ -12,7 +12,7 @@ from workflows.orchestration import workflows
 
 
 async def main():
-    with ThreadPoolExecutor(max_workers=5) as executor:
+    with ThreadPoolExecutor(max_workers=10) as executor:
         logging.info("Starting worker...")
         client = await settings.get_client()
         worker = Worker(
