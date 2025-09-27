@@ -8,8 +8,11 @@ This repository is organized so that each main folder contains the code and Dock
 - `/config` - Contains configuration files (YAML) for Temporal and related services. These are copied into the appropriate images at build time.
 - `/dev/temporal-stack` - Contains the Helm chart for local Kubernetes deployment, referencing the images built from the above folders.
 - `render.yaml` - Render.com deployment configuration, referencing the images and environment variables for all services.
+- `.pre-commit-config.yaml` - Precommit config to ensure homogenous styling and enforce compliance when collaborating.
 
 Each service in the deployment uses the Docker image built from its corresponding folder, ensuring clear separation of concerns and easy customization or extension of any component.
+
+
 
 ## Part 1 - Deployment
 
@@ -184,12 +187,16 @@ It detects automatically which tools needs to be installed.
 
 ### 2. Setup
 
+First start your local cluster
+
+minikube start
+
 You **must** build at least once the docker image with the python workflows **inside the docker env of k8s** for local development.
 Running from the root of this repo :
 
 `
 eval $(minikube -p minikube docker-env)
-docker build -t python-worker:latest ./temporal-workflows
+docker build -t python-worker:latest -f ./temporal-workflows/Dockerfile .
 `
 
 Then deploy the helm chart by running : 

@@ -1,0 +1,21 @@
+---
+default_stages: [commit, push]
+repos:
+    - repo: https://github.com/psf/black
+      rev: 24.3.0
+      hooks:
+          - id: black
+            language_version: python3
+            types: [python]
+    - repo: https://github.com/PyCQA/isort
+      rev: 5.13.2
+      hooks:
+          - id: isort
+            language_version: python3
+            types: [python]
+            args: [--profile, black, --filter-files]
+    # - repo: https://github.com/adrienverge/yamllint.git
+    #   rev: v1.21.0  # or higher tag
+    #   hooks:
+    #       - id: yamllint
+    #         args: [--format, parsable, --strict]
