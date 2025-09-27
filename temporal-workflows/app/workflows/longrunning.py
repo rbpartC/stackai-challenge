@@ -1,8 +1,9 @@
-from temporalio import activity
-from datetime import timedelta
-from typing import List, Any
 import asyncio
-from temporalio import workflow
+from datetime import timedelta
+from typing import Any, List
+
+from temporalio import activity, workflow
+
 
 # Activity to process a chunk of data with heartbeat progress reporting
 @activity.defn
@@ -13,10 +14,14 @@ async def process_data_chunk(data_chunk: List[Any]) -> int:
         await asyncio.sleep(0.1)
         # Heartbeat every 10 items
         if i % 10 == 0:
-            activity.heartbeat("Processed item {}/{} of chunk".format(i + 1, chunk_size))
+            activity.heartbeat(
+                "Processed item {}/{} of chunk".format(i + 1, chunk_size)
+            )
     return len(data_chunk)
 
+
 # Workflow to process a large dataset using Continue As New
+
 
 @workflow.defn
 class ProcessLargeDatasetWorkflow:
@@ -24,7 +29,9 @@ class ProcessLargeDatasetWorkflow:
         self.chunk_size = 100
 
     @workflow.run
-    async def run(self, dataset_length, start_index: int = 0, total_processed: int = 0) -> int:
+    async def run(
+        self, dataset_length, start_index: int = 0, total_processed: int = 0
+    ) -> int:
         # If all data processed, return total
         if start_index >= dataset_length:
             return total_processed
@@ -43,6 +50,7 @@ class ProcessLargeDatasetWorkflow:
         return await workflow.continue_as_new(
             args=[dataset_length, end_index, total_processed + processed],
         )
-    
+
+
 longrunning_workflows = [ProcessLargeDatasetWorkflow]
 longrunning_activities = [process_data_chunk]

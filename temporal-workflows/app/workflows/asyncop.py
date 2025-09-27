@@ -1,14 +1,18 @@
 import asyncio
 from datetime import timedelta
 
-from temporalio import workflow, activity, exceptions
+from temporalio import activity, exceptions, workflow
 from temporalio.common import RetryPolicy
-from .. import settings
+
+from . import settings
 
 
 class IsEvenError(Exception):
     pass
+
+
 # --- Activities ---
+
 
 @activity.defn
 async def unreliable_activity(param: int) -> str:
@@ -18,7 +22,9 @@ async def unreliable_activity(param: int) -> str:
     await asyncio.sleep(param)
     return f"Processed {param}"
 
+
 # --- Workflow ---
+
 
 @workflow.defn
 class AsyncWorkflow:
@@ -27,7 +33,7 @@ class AsyncWorkflow:
         retry_policy = RetryPolicy(
             initial_interval=timedelta(seconds=1),
             maximum_interval=timedelta(seconds=10),
-            maximum_attempts=3
+            maximum_attempts=3,
         )
         try:
             result = await workflow.execute_activity(
@@ -47,6 +53,7 @@ class AsyncWorkflow:
         except IsEvenError as err:
             # Error recovery logic
             return f"Fallback result due to simulated failure"
+
 
 # --- Worker Entrypoint ---
 

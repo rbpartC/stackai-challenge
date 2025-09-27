@@ -1,21 +1,28 @@
-from datetime import timedelta
-from temporalio import workflow
-from pydantic import BaseModel, Field
-from typing import Annotated, List
 import asyncio
-from .. import settings
+from datetime import timedelta
+from typing import Annotated, List
+
+from pydantic import BaseModel, Field
+from temporalio import workflow
+
+from . import settings
 
 # --- Data models with validation ---
+
 
 class InputData(BaseModel):
     value: Annotated[int, Field(strict=True, ge=0)]  # Non-negative integer
 
+
 class ResultData(BaseModel):
     result: int
+
     def as_input(self) -> InputData:
         return InputData(value=self.result)
 
+
 # --- Child Workflows ---
+
 
 @workflow.defn
 class AddOneWorkflow:
@@ -23,11 +30,13 @@ class AddOneWorkflow:
     async def run(self, input_data: InputData) -> ResultData:
         return ResultData(result=input_data.value + 1)
 
+
 @workflow.defn
 class MultiplyByTwoWorkflow:
     @workflow.run
     async def run(self, input_data: InputData) -> ResultData:
         return ResultData(result=input_data.value * 2)
+
 
 @workflow.defn
 class SumValuesWorkflow:
@@ -36,7 +45,9 @@ class SumValuesWorkflow:
         total = sum(item.value for item in input_data)
         return ResultData(result=total)
 
+
 # --- Main Orchestration Workflow ---
+
 
 @workflow.defn
 class OrchestrationWorkflow:
@@ -49,7 +60,7 @@ class OrchestrationWorkflow:
             AddOneWorkflow.run,
             validated_inputs[0],
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
-            execution_timeout=timedelta(seconds=10)
+            execution_timeout=timedelta(seconds=10),
         )
 
         # Parallel execution: multiply_by_two to the rest (as child workflows)
@@ -58,7 +69,7 @@ class OrchestrationWorkflow:
                 MultiplyByTwoWorkflow.run,
                 inp,
                 task_queue=settings.EXAMPLE_SYNC_QUEUE,
-                execution_timeout=timedelta(seconds=10)
+                execution_timeout=timedelta(seconds=10),
             )
             for i, inp in enumerate(validated_inputs[1:])
         ]
@@ -70,11 +81,17 @@ class OrchestrationWorkflow:
             SumValuesWorkflow.run,
             [res.as_input() for res in all_results],
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
-            execution_timeout=timedelta(seconds=10)
+            execution_timeout=timedelta(seconds=10),
         )
         return final_result.result
+
 
 # --- Example client code to start workflow (for reference) ---
 # Simply run this with python orchestration.py from the worker container
 
-workflows = [OrchestrationWorkflow, AddOneWorkflow, MultiplyByTwoWorkflow, SumValuesWorkflow]
+workflows = [
+    OrchestrationWorkflow,
+    AddOneWorkflow,
+    MultiplyByTwoWorkflow,
+    SumValuesWorkflow,
+]
