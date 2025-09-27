@@ -3,6 +3,7 @@ from temporalio import workflow
 from pydantic import BaseModel, Field
 from typing import Annotated, List
 import asyncio
+from .. import settings
 
 # --- Data models with validation ---
 

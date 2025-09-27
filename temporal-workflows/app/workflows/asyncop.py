@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from temporalio import workflow, activity, exceptions
 from temporalio.common import RetryPolicy
-import settings
+from .. import settings
 
 
 class IsEvenError(Exception):
