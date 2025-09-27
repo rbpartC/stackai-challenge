@@ -214,3 +214,37 @@ kubectl port-forward svc/temporal-ui 8080:8080
 You can now run workflows directly on your computer on http://localhost:8080/
 
 
+### 3. ArgoCD
+
+#### 1. Setup
+
+Configure and install argocd locally
+`
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+rm argocd-linux-amd64
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl config set-context --current --namespace=argocd
+
+`
+
+Then, once your forwarded port to 8080 on your host machine you can login through the CLI to create the temporal app very easily.
+
+`
+argocd login 127.0.0.1:8080 --username admin --password $(argocd admin initial-password -n argocd | head -n 1)
+
+argocd cluster add minikube
+
+kubectl apply -f /home/ruben/personal/stackai/dev/argocd-application.yaml -n argocd
+`
+
+With the current setup, the containers will be create in default namespace.
+To view Temporal UI at the same time, forward the container port to a different port than ArgoCD, like : 
+
+`
+kubectl port-forward -n default svc/temporal-ui 5000:8080
+`
