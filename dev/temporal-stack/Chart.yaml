@@ -1,0 +1,4 @@
+apiVersion: v2
+name: temporal-stack
+description: Deploy Temporal and all components locally
+version: 0.1.0

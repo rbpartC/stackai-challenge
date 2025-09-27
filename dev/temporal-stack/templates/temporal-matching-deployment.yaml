@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: temporal-matching
+spec:
+  replicas: {{ .Values.temporal.matching.replicas }}
+  selector:
+    matchLabels:
+      app: temporal-matching
+  template:
+    metadata:
+      labels:
+        app: temporal-matching
+    spec:
+      containers:
+        - name: temporal-matching
+          image: {{ .Values.temporal.image }}
+          args: ["autosetup", "&&", "temporal-server", "start", "--service", "matching"]
+          env:
+            - name: DB
+              value: postgres12
+            - name: DBNAME
+              value: {{ .Values.postgres.db }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.user }}
+            - name: POSTGRES_PWD
+              value: {{ .Values.postgres.password }}
+            - name: POSTGRES_SEEDS
+              value: {{ .Values.postgres.host }}
+            - name: POSTGRES_TLS_ENABLED
+              value: "false"
+            - name: ENABLE_ES
+              value: "true"
+            - name: DB_PORT
+              value: {{ .Values.postgres.port | quote }}
+            - name: ES_SEEDS
+              value: {{ .Values.elasticsearch.host }}
+            - name: ES_PORT
+              value: {{ .Values.elasticsearch.port | quote }}
+            - name: ES_USER
+              value: {{ .Values.elasticsearch.elastic_user }}
+            - name: ES_PWD
+              value: {{ .Values.elasticsearch.password }}
+            - name: ES_VERSION
+              value: {{ .Values.elasticsearch.version }}
+            - name: ES_SCHEME
+              value: "http"               
+            - name: TEMPORAL_ADDRESS
+              value: "{{ .Values.temporal.frontend.host }}:{{ .Values.temporal.frontend.port }}"
+            - name: SKIP_SCHEMA_SETUP
+              value: "true"
+            - name: SKIP_DB_SETUP
+              value: "true"
+          ports:
+            - name: grpc
+              containerPort: {{ .Values.temporal.matching.grpcPort }}
+            - name: membership
+              containerPort: {{ .Values.temporal.matching.membershipPort }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.temporal.matching.host }}
+spec:
+  type: ClusterIP
+  selector:
+    app: temporal-matching
+  ports:
+    - name: grpc
+      port: {{ .Values.temporal.matching.grpcPort }}
+      targetPort: grpc
+    - name: membership
+      port: {{ .Values.temporal.matching.membershipPort }}
+      targetPort: membership

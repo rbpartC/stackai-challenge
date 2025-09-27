@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.elasticsearch.host }}
+spec:
+  ports:
+    - port: {{ .Values.elasticsearch.port }}
+  selector:
+    app: elasticsearch
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+        - name: elasticsearch
+          image: {{ .Values.elasticsearch.image }}
+          env:
+            - name: discovery.type
+              value: {{ .Values.elasticsearch.env.discovery_type }}
+            - name: xpack.security.enabled
+              value: "true"
+            - name: ES_JAVA_OPTS
+              value: {{ .Values.elasticsearch.env.ES_JAVA_OPTS }}
+            - name: network.host
+              value: {{ .Values.elasticsearch.env.network_host }}
+            - name: ELASTIC_PASSWORD
+              value: {{ .Values.elasticsearch.password }}
+            - name: ELASTIC_USER
+              value: {{ .Values.elasticsearch.elastic_user }}
+            - name: ELASTICSEARCH_HOST
+              value: {{ .Values.elasticsearch.host }}
+            - name: ELASTICSEARCH_PORT
+              value: "{{ .Values.elasticsearch.port }}"
+          ports:
+            - containerPort: {{ .Values.elasticsearch.port }}
+          resources:
+            requests:
+              memory: {{ .Values.elasticsearch.resources.requests.memory }}
+              cpu: {{ .Values.elasticsearch.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.elasticsearch.resources.limits.memory }}
+              cpu: {{ .Values.elasticsearch.resources.limits.cpu }}

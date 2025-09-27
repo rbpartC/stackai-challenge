@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: temporal-admin-tools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: temporal-admin-tools
+  template:
+    metadata:
+      labels:
+        app: temporal-admin-tools
+    spec:
+      containers:
+        - name: temporal-admin-tools
+          image: temporalio/admin-tools:1.28
+          env:
+            - name: DB
+              value: postgres12
+            - name: DBNAME
+              value: {{ .Values.postgres.db }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.user }}
+            - name: POSTGRES_PWD
+              value: {{ .Values.postgres.password }}
+            - name: POSTGRES_SEEDS
+              value: {{ .Values.postgres.host }}
+            - name: DB_PORT
+              value: {{ .Values.postgres.port | quote }}
+            - name: ES_SEEDS
+              value: {{ .Values.elasticsearch.host }}
+            - name: ES_PORT
+              value: {{ .Values.elasticsearch.port | quote }}
+            - name: ES_PWD
+              value: {{ .Values.elasticsearch.password }}
+            - name: ES_USER
+              value: {{ .Values.elasticsearch.elastic_user }}
+            - name: ES_VERSION
+              value: {{ .Values.elasticsearch.version }}
+            - name: ES_SCHEME
+              value: "http"
+            - name: ENABLE_ES
+              value: "true"
+            - name: TEMPORAL_HOME
+              value: "/etc/temporal"

@@ -14,14 +14,16 @@
    
       Command to run inside admin-tools create the PSQL schema (version of the schema depends on the version of temporal; I used latest versions of everything for simplicity)
    `
-   ./temporal-sql-tool --ep $POSTGRES_SEEDS -p $POSTGRES_PORT -u $POSTGRES_USER --pw $POSTGRES_PASSWORD --db $DBNAME --pl postgres12 --tls create-schema -d schema/postgresql/v12/temporal/versioned
+   ./temporal-sql-tool --ep $POSTGRES_SEEDS -p $POSTGRES_PORT -u $POSTGRES_USER --pw $POSTGRES_PASSWORD --db $DBNAME --pl postgres12 --tls setup-schema -d schema/postgresql/v12/temporal/versioned
    `
       Commands to put ES settings and setup visibility index
    `
    ES_SERVER="${ES_SCHEME}://${ES_SEEDS%%,*}:${ES_PORT}"
    SETTINGS_URL="${ES_SERVER}/_cluster/settings"
    SETTINGS_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
+   SCHEMA_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/index_template_${ES_VERSION}.json
    TEMPLATE_URL="${ES_SERVER}/_template/temporal_visibility_v1_template"
+   INDEX_URL="${ES_SERVER}/temporal_visibility_v1_dev"
    curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
    curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
    curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
@@ -150,3 +152,32 @@ Continued as new 1 : https://temporal-ui-oq8v.onrender.com/namespaces/default/wo
 Completion : 
 https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/0436499f-b538-46b1-b798-517f676beea4/83951006-e91e-4f13-ad06-26e4553ac040/history
 
+## Part 3 - Development Environment Setup
+
+### 1. Install tools
+
+Run ./dev/install.sh to install automatically kubectl, helm, minikube on Linux/Debian machine.
+It detects automatically which tools needs to be installed.
+
+### 2. Setup
+
+You **must** build at least once the docker image with the python workflows **inside the docker env of k8s** for local development.
+Running from the root of this repo :
+
+`
+eval $(minikube -p minikube docker-env)
+docker build -t python-worker:latest ./temporal-workflows
+`
+
+Then deploy the helm chart by running : 
+
+`
+helm install temporal-stack ./dev/temporal-stack
+`
+
+To view the UI on your computer, forward port
+`
+kubectl port-forward svc/temporal-ui 8080:8080
+`
+
+You can now run workflows directly on your computer !

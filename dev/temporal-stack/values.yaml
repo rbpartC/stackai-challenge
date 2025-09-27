@@ -1,0 +1,57 @@
+postgres:
+  image: postgres:15
+  user: temporal
+  password: temporal
+  db: temporal
+  host: postgres
+  port: 5432
+
+elasticsearch:
+  image: elasticsearch:7.17.0
+  password: elastic
+  host: elasticsearch
+  port: 9200
+  elastic_user: elastic
+  env:
+    discovery_type: single-node
+    ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+    network_host: 0.0.0.0
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+
+temporal:
+  image: temporalio/auto-setup:1.28
+  frontend:
+    replicas: 1
+    host: temporal-frontend
+    grpcPort: 7233
+    membershipPort: 6933
+  history:
+    replicas: 1
+    host: temporal-history
+    grpcPort: 7234
+    membershipPort: 6934
+  matching:
+    replicas: 1
+    host: temporal-matching
+    grpcPort: 7235
+    membershipPort: 6935
+  worker:
+    replicas: 1
+    host: temporal-worker
+    grpcPort: 7239
+    membershipPort: 6939
+
+pythonWorker:
+  image: python-worker:latest
+  replicas: 1
+
+ui:
+  image: temporalio/ui:2.40.1
+  replicas: 1
+  port: 8080

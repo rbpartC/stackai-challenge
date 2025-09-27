@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: temporal-frontend
+spec:
+  replicas: {{ .Values.temporal.frontend.replicas }}
+  selector:
+    matchLabels:
+      app: temporal-frontend
+  template:
+    metadata:
+      labels:
+        app: temporal-frontend
+    spec:
+      containers:
+        - name: temporal-frontend
+          image: {{ .Values.temporal.image }}
+          args: ["autosetup", "&&", "temporal-server", "start", "--service", "frontend"]
+          env:
+            - name: DB
+              value: postgres12
+            - name: DBNAME
+              value: {{ .Values.postgres.db }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.user }}
+            - name: POSTGRES_PWD
+              value: {{ .Values.postgres.password }}
+            - name: POSTGRES_SEEDS
+              value: {{ .Values.postgres.host }}
+            - name: POSTGRES_TLS_ENABLED
+              value: "false"
+            - name: ENABLE_ES
+              value: "true"
+            - name: DB_PORT
+              value: {{ .Values.postgres.port | quote }}
+            - name: ES_SEEDS
+              value: {{ .Values.elasticsearch.host }}
+            - name: ES_PORT
+              value: {{ .Values.elasticsearch.port | quote }}
+            - name: ES_USER
+              value: {{ .Values.elasticsearch.elastic_user }}
+            - name: ES_PWD
+              value: {{ .Values.elasticsearch.password }}
+            - name: ES_VERSION
+              value: {{ .Values.elasticsearch.version }}
+            - name: ES_SCHEME
+              value: "http"            
+            # - name: BIND_ON_IP
+            #   value: "0.0.0.0"
+
+          ports:
+          - name: grpc
+            containerPort: {{ .Values.temporal.frontend.grpcPort }}
+          - name: membership
+            containerPort: {{ .Values.temporal.frontend.membershipPort }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: temporal-frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: temporal-frontend
+  ports:
+    - name: grpc
+      port: {{ .Values.temporal.frontend.grpcPort }}
+      targetPort: grpc
+    - name: membership
+      port: {{ .Values.temporal.frontend.membershipPort }}
+      targetPort: membership

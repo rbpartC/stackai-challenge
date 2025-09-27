@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-worker
+spec:
+  replicas: {{ .Values.pythonWorker.replicas }}
+  selector:
+    matchLabels:
+      app: python-worker
+  template:
+    metadata:
+      labels:
+        app: python-worker
+    spec:
+      containers:
+        - name: python-worker
+          image: python-worker:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TEMPORAL_HOST
+              value: {{ .Values.temporal.frontend.host }}
+            - name: TEMPORAL_PORT
+              value: "{{ .Values.temporal.frontend.grpcPort }}"
