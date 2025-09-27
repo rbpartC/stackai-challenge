@@ -162,5 +162,5 @@ publicClient:
     hostPort: '{{ default .Env.TEMPORAL_FRONTEND_HOST "127.0.0.1" }}:{{  default .Env.FRONTEND_GRPC_PORT "7233" }}'
 
 dynamicConfigClient:
-    filepath: "{{ default .Env.DYNAMIC_CONFIG_FILE_PATH "/etc/temporal/config/dynamicconfig" }}"
+    filepath: {{ default .Env.DYNAMIC_CONFIG_FILE_PATH "/etc/temporal/config/dynamicconfig" }}
     pollInterval: "60s"

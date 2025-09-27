@@ -105,6 +105,15 @@ Unfortunately, it seems that postgres database is not configurable through envVa
   - Using the free plan for PostgreSQL and standard plan for Elasticsearch may limit scalability and performance.
   - ES is deployed in single-node mode but should be deployed on cluster mode.
 
+### Optionals 
+
+- Enable archival for your namespace (default here) by logging into the shell of your temporal-frontend container, and run :
+
+`
+temporal operator namespace update --history-archival-state enabled -n default
+temporal operator namespace update --visibility-archival-state enabled -n default
+`
+
 ### Deliverables
 
 - render.yaml file in this repository
