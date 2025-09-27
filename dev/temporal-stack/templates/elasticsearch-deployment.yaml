@@ -36,7 +36,7 @@ spec:
               value: {{ .Values.elasticsearch.env.network_host }}
             - name: ELASTIC_PASSWORD
               value: {{ .Values.elasticsearch.password }}
-            - name: ELASTIC_USER
+            - name: ELASTIC_USERNAME
               value: {{ .Values.elasticsearch.elastic_user }}
             - name: ELASTICSEARCH_HOST
               value: {{ .Values.elasticsearch.host }}

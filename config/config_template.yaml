@@ -30,8 +30,8 @@ persistence:
                 url:
                     scheme: {{ default .Env.ES_SCHEME "http" }}
                     host: '{{ default .Env.ES_SEEDS "" }}:{{ default .Env.ES_PORT "9200" }}'
-                username: '{{ default .Env.ES_USER "" }}'
-                password: '{{ default .Env.ES_PWD "" }}'
+                username: '{{ default .Env.ELASTIC_USERNAME "" }}'
+                password: '{{ default .Env.ELASTIC_PASSWORD "" }}'
                 indices:
                     visibility: '{{ default .Env.ES_VIS_INDEX "temporal_visibility_v1_dev" }}'
 
@@ -124,7 +124,7 @@ clusterMetadata:
             enabled: true
             initialFailoverVersion: 1
             rpcName: "frontend"
-            rpcAddress: '127.0.0.1:{{  default .Env.FRONTEND_GRPC_PORT "7233" }}'
+            rpcAddress: '{{ default .Env.TEMPORAL_FRONTEND_HOST "" }}:{{  default .Env.FRONTEND_GRPC_PORT "7233" }}'
 
 dcRedirectionPolicy:
     policy: "noop"

@@ -12,11 +12,11 @@
 3. **Initialize databases**
    - When using the temporal service container (and not the autosetup one), databases are not initialized with their appropriate schemas. You can deploy an admin-tools container as worker and enter it, then run the commands with the temporal-sql-tool to setup the psql schemas, and run the commands to configure the ES cluster and put the schema template, and create the visibility index. This container can be suspended after setting-up/upgrading schemas. The auto-setup script is actually a good way to understand the sequence and which commands to run.
    
-      Command to run inside admin-tools create the PSQL schema (version of the schema depends on the version of temporal; I used latest versions of everything for simplicity)
+      Command to run inside admin-tools container to create the PSQL schema (version of the schema depends on the version of temporal; I used latest versions of everything for simplicity)
    `
    ./temporal-sql-tool --ep $POSTGRES_SEEDS -p $POSTGRES_PORT -u $POSTGRES_USER --pw $POSTGRES_PASSWORD --db $DBNAME --pl postgres12 --tls setup-schema -d schema/postgresql/v12/temporal/versioned
    `
-      Commands to put ES settings and setup visibility index
+      Commands to run inside admin-tools container to put ES settings and setup visibility mapping/index
    `
    ES_SERVER="${ES_SCHEME}://${ES_SEEDS%%,*}:${ES_PORT}"
    SETTINGS_URL="${ES_SERVER}/_cluster/settings"
@@ -24,10 +24,11 @@
    SCHEMA_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/index_template_${ES_VERSION}.json
    TEMPLATE_URL="${ES_SERVER}/_template/temporal_visibility_v1_template"
    INDEX_URL="${ES_SERVER}/temporal_visibility_v1_dev"
-   curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
-   curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
-   curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
+   curl --fail --user "${ELASTIC_USERNAME}":"${ELASTIC_PASSWORD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
+   curl --fail --user "${ELASTIC_USERNAME}":"${ELASTIC_PASSWORD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
+   curl --user "${ELASTIC_USERNAME}":"${ELASTIC_PASSWORD}" -X PUT "${INDEX_URL}" --write-out "\n"
    `
+   This step can be automated as demonstrated later with the local dev environment, but in production it wouldn't serve any purpose or could be even dangerous (table suppressions or incompatibilities could be generated), and this step is very fast anyway.
 
 4. **Deploy Temporal Services**
    - **Frontend, History, Matching, Worker**: Each Temporal service is deployed as a separate Docker service using the same Dockerfile but with different `SERVICES` environment variables. This separation allows for independent scaling and fault isolation.
@@ -180,4 +181,6 @@ To view the UI on your computer, forward port
 kubectl port-forward svc/temporal-ui 8080:8080
 `
 
-You can now run workflows directly on your computer !
+You can now run workflows directly on your computer on http://localhost:8080/
+
+

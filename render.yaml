@@ -1,4 +1,14 @@
 envVarGroups:
+  - name: elasticsearch
+    envVars:
+    - key: ELASTIC_USERNAME
+      value: elastic
+    - key: ELASTIC_PASSWORD
+      generateValue: true
+    - key: ES_PORT
+      value: "9200"
+    - key: ES_TRANSPORT_PORT
+      value: "9300"
   - name: temporal-shared
     envVars:
     - key: DYNAMIC_CONFIG_FILE_PATH
@@ -7,10 +17,6 @@ envVarGroups:
       value: "true"
     - key: ES_VERSION
       value: v7
-    - key: ES_USER
-      value: elastic
-    - key: ES_PORT
-      value: "9200"
     - key: DB
       value: postgresql
     - key: FRONTEND_GRPC_PORT
@@ -152,13 +158,11 @@ services:
       sizeGB: 5
     repo: https://github.com/rbpartC/elasticsearch
     envVars:
-      - fromGroup: temporal
+      - fromGroup: elasticsearch
       - key: discovery.type
         value: single-node
       - key: ES_JAVA_OPTS
         value: "-Xms512m -Xmx512m"
-      - key: ELASTIC_PASSWORD
-        generateValue: true
 
   - type: worker
     name: admin-tools
@@ -195,11 +199,7 @@ services:
         name: elasticsearch
         type: pserv
         property: host
-    - key: ES_PWD
-      fromService:
-        name: elasticsearch
-        type: pserv
-        envVarKey: ELASTIC_PASSWORD
+    - fromGroup: elasticsearch
   
   - type: pserv
     name: temporal-frontend
@@ -209,25 +209,15 @@ services:
     runtime: docker
     dockerfilePath: ./server/Dockerfile
     envVars:
-    - key: PORT
-      value: "7233"
     - fromGroup: temporal-shared
     - key: SERVICES
       value: frontend
-    - key: SKIP_POSTGRES_DB_CREATION
-      value: "true"
-    - key: SKIP_VISIBILITY_DB_SETUP
-      value: "true"
     - key: ES_SEEDS
       fromService:
         name: elasticsearch
         type: pserv
         property: host
-    - key: ES_PWD
-      fromService:
-        name: elasticsearch
-        type: pserv
-        envVarKey: ELASTIC_PASSWORD
+    - fromGroup: elasticsearch
     - key: DBNAME
       fromDatabase:
         name: temporal-core
@@ -271,11 +261,7 @@ services:
         name: elasticsearch
         type: pserv
         property: host
-    - key: ES_PWD
-      fromService:
-        name: elasticsearch
-        type: pserv
-        envVarKey: ELASTIC_PASSWORD
+    - fromGroup: elasticsearch
     - key: DBNAME
       fromDatabase:
         name: temporal-core
@@ -319,11 +305,7 @@ services:
         name: elasticsearch
         type: pserv
         property: host
-    - key: ES_PWD
-      fromService:
-        name: elasticsearch
-        type: pserv
-        envVarKey: ELASTIC_PASSWORD
+    - fromGroup: elasticsearch
     - key: DBNAME
       fromDatabase:
         name: temporal-core
@@ -345,6 +327,7 @@ services:
       fromDatabase:
         name: temporal-core
         property: port
+
   - type: worker
     name: temporal-worker
     autoDeploy: false
@@ -373,11 +356,7 @@ services:
         name: elasticsearch
         type: pserv
         property: host
-    - key: ES_PWD
-      fromService:
-        name: elasticsearch
-        type: pserv
-        envVarKey: ELASTIC_PASSWORD
+    - fromGroup: elasticsearch
     - key: DBNAME
       fromDatabase:
         name: temporal-core
