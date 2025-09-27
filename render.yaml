@@ -11,8 +11,6 @@ envVarGroups:
       value: "9300"
   - name: temporal-shared
     envVars:
-    - key: SQL_CONNECT_ATTRIBUTES
-      value: "binary_parameters=yes"
     - key: DYNAMIC_CONFIG_FILE_PATH
       value: /etc/temporal/dynamicconfig_es.yaml
     - key: ENABLE_ES
