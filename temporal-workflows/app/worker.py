@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from concurrent.futures.thread import ThreadPoolExecutor
 
 import settings
@@ -12,6 +13,7 @@ from workflows.orchestration import workflows
 
 async def main():
     with ThreadPoolExecutor(max_workers=5) as executor:
+        logging.info("Starting worker...")
         client = await settings.get_client()
         worker = Worker(
             client,
@@ -27,7 +29,7 @@ async def main():
                 use_worker_versioning=True,
                 default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE,
                 version=WorkerDeploymentVersion(
-                    deployment_name="sync-python-worker", build_id=settings.BUILD_ID
+                    deployment_name=settings.DEPLOYMENT_NAME, build_id=settings.BUILD_ID
                 ),
             ),
         )
