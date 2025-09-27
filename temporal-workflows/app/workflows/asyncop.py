@@ -4,7 +4,7 @@ from datetime import timedelta
 from temporalio import workflow, activity, exceptions
 from temporalio.common import RetryPolicy
 import settings
-import uuid
+
 
 class IsEvenError(Exception):
     pass
@@ -52,16 +52,3 @@ class AsyncWorkflow:
 
 async_activities = [unreliable_activity]
 async_workflows = [AsyncWorkflow]
-
-async def main():
-    client = await settings.get_client()
-    result = await client.start_workflow(
-        AsyncWorkflow.run,
-        1,
-        id=f"async-workflow-id-{uuid.uuid4()}",
-        task_queue=settings.EXAMPLE_SYNC_QUEUE,
-    )
-    print("Workflow result:", result.result())
-
-if __name__ == "__main__":
-    asyncio.run(main())

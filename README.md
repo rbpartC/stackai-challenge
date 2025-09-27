@@ -1,3 +1,16 @@
+## Project Structure
+
+This repository is organized so that each main folder contains the code and Dockerfile to build a Docker image used by one or more services in the deployment:
+
+- `/server` - Contains the Temporal server configuration, entrypoints, and Dockerfile. The image built here is used for all core Temporal services (frontend, history, matching, worker, admin-tools).
+- `/web` - Contains the Temporal UI code and Dockerfile. The image built here is used for the Temporal UI web service.
+- `/temporal-workflows` - Contains the Python Temporal worker code and Dockerfile. The image built here is used for the custom Python worker service.
+- `/config` - Contains configuration files (YAML) for Temporal and related services. These are copied into the appropriate images at build time.
+- `/dev/temporal-stack` - Contains the Helm chart for local Kubernetes deployment, referencing the images built from the above folders.
+- `render.yaml` - Render.com deployment configuration, referencing the images and environment variables for all services.
+
+Each service in the deployment uses the Docker image built from its corresponding folder, ensuring clear separation of concerns and easy customization or extension of any component.
+
 ## Part 1 - Deployment
 
 ### Deployment Sequence and Rationale

@@ -2,9 +2,7 @@ from datetime import timedelta
 from temporalio import workflow
 from pydantic import BaseModel, Field
 from typing import Annotated, List
-import settings
 import asyncio
-import uuid
 
 # --- Data models with validation ---
 
@@ -79,16 +77,3 @@ class OrchestrationWorkflow:
 # Simply run this with python orchestration.py from the worker container
 
 workflows = [OrchestrationWorkflow, AddOneWorkflow, MultiplyByTwoWorkflow, SumValuesWorkflow]
-
-async def main():
-    client = await settings.get_client()
-    result = await client.start_workflow(
-        OrchestrationWorkflow.run,
-        [1, 2, 3],
-        id=f"orchestration-workflow-id-{uuid.uuid4()}",
-        task_queue=settings.EXAMPLE_SYNC_QUEUE,
-    )
-    print("Workflow result:", result.result())
-
-if __name__ == "__main__":
-    asyncio.run(main())

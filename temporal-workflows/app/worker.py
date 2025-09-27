@@ -1,10 +1,10 @@
 from temporalio.worker import Worker, WorkerDeploymentConfig, WorkerDeploymentVersion
 from temporalio.common import VersioningBehavior
 import asyncio
-from orchestration import workflows
-from asyncop import async_activities, async_workflows
-from faf import faf_workflows
-from longrunning import longrunning_workflows, longrunning_activities
+from workflows.orchestration import workflows
+from workflows.asyncop import async_activities, async_workflows
+from workflows.faf import faf_workflows
+from workflows.longrunning import longrunning_workflows, longrunning_activities
 import settings
 from concurrent.futures.thread import ThreadPoolExecutor
 
@@ -18,11 +18,11 @@ async def main():
             workflows=workflows + async_workflows + faf_workflows + longrunning_workflows,
             activity_executor=executor,
             workflow_task_executor=executor,
-            # deployment_config=WorkerDeploymentConfig(
-            #     use_worker_versioning=True,
-            #     default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE,
-            #     version=WorkerDeploymentVersion(deployment_name="sync-python-worker",build_id=settings.BUILD_ID),
-            # )
+            deployment_config=WorkerDeploymentConfig(
+                use_worker_versioning=True,
+                default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE,
+                version=WorkerDeploymentVersion(deployment_name="sync-python-worker",build_id=settings.BUILD_ID),
+            )
         )
         await worker.run()
 

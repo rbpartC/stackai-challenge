@@ -1,13 +1,9 @@
 FROM python:3.12-slim
 
 WORKDIR /app
-RUN pip install --no-cache-dir temporalio pydantic
+COPY ./temporal-workflows/requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY temporal-workflows/orchestration.py /app/orchestration.py
-COPY temporal-workflows/asyncop.py /app/asyncop.py
-COPY temporal-workflows/faf.py /app/faf.py
-COPY temporal-workflows/longrunning.py /app/longrunning.py
-COPY temporal-workflows/worker.py /app/worker.py
-COPY temporal-workflows/settings.py /app/settings.py
+COPY ./temporal-workflows/app/* /app/
 
-CMD ["python", "worker.py"]
+CMD ["python", "app/worker.py"]

@@ -8,7 +8,7 @@ from temporalio import workflow
 @activity.defn
 async def process_data_chunk(data_chunk: List[Any]) -> int:
     chunk_size = len(data_chunk)
-    for i, item in enumerate(data_chunk):
+    for i, _ in enumerate(data_chunk):
         # Simulate processing
         await asyncio.sleep(0.1)
         # Heartbeat every 10 items
