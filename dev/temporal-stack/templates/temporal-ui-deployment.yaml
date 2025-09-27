@@ -27,7 +27,7 @@ spec:
           image: {{ .Values.ui.image }}
           env:
             - name: TEMPORAL_ADDRESS
-              value: "{{ .Values.temporal.frontend.host }}:{{ .Values.temporal.frontend.port }}"
+              value: "{{ .Values.temporal.frontend.host }}:{{ .Values.temporal.frontend.grpcPort }}"
             - name: TEMPORAL_UI_PORT
               value: {{ .Values.ui.port | quote }}
           ports:

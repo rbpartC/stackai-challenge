@@ -46,7 +46,7 @@ spec:
             - name: ES_SCHEME
               value: "http"               
             - name: TEMPORAL_ADDRESS
-              value: "{{ .Values.temporal.frontend.host }}:{{ .Values.temporal.frontend.port }}"
+              value: "{{ .Values.temporal.frontend.host }}:{{ .Values.temporal.frontend.grpcPort }}"
             - name: SKIP_SCHEMA_SETUP
               value: "true"
             - name: SKIP_DB_SETUP
