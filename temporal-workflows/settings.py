@@ -3,8 +3,8 @@ from temporalio.client import Client
 import logging
 import os
 
-TEMPORAL_HOST: str = os.getenv("TEMPORAL_HOST", "localhost")
-TEMPORAL_PORT: int = int(os.getenv("TEMPORAL_PORT", 7233))
+TEMPORAL_HOST: str = os.getenv("TEMPORAL_GRPC_HOST", "localhost")
+TEMPORAL_PORT: int = int(os.getenv("FRONTEND_GRPC_PORT", 7233))
 
 EXAMPLE_SYNC_QUEUE: str = "example-task-queue"
 EXAMPLE_ASYNC_QUEUE: str = "example-async-task-queue"

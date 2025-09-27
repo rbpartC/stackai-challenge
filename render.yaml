@@ -9,8 +9,100 @@ envVarGroups:
       value: v7
     - key: ES_USER
       value: elastic
+    - key: ES_PORT
+      value: "9200"
     - key: DB
       value: postgresql
+    - key: FRONTEND_GRPC_PORT
+      value: "7233"
+    - key: FRONTEND_MEMBERSHIP_PORT
+      value: "6933"
+    - key: HISTORY_GRPC_PORT
+      value: "7234"
+    - key: HISTORY_MEMBERSHIP_PORT
+      value: "6934"
+    - key: MATCHING_GRPC_PORT
+      value: "7235"
+    - key: MATCHING_MEMBERSHIP_PORT
+      value: "6935"
+    - key: WORKER_GRPC_PORT
+      value: "7239"
+    - key: WORKER_MEMBERSHIP_PORT
+      value: "6939"
+    - key: LOG_LEVEL
+      value: info
+    - key: NUM_HISTORY_SHARDS
+      value: "4"
+    - key: SQL_MAX_CONNS
+      value: "20"
+    - key: SQL_MAX_IDLE_CONNS
+      value: "20"
+    - key: SQL_MAX_CONN_TIME
+      value: 1h
+    - key: SQL_TLS_ENABLED
+      value: "false"
+    - key: SQL_CA
+      value: ""
+    - key: SQL_CERT
+      value: ""
+    - key: SQL_CERT_KEY
+      value: ""
+    - key: SQL_HOST_VERIFICATION
+      value: "false"
+    - key: SQL_HOST_NAME
+      value: ""
+    - key: ES_SCHEME
+      value: http
+    - key: ES_VIS_INDEX
+      value: temporal_visibility_v1_dev
+    - key: TEMPORAL_BROADCAST_ADDRESS
+      value: ""
+    - key: PPROF_PORT
+      value: "0"
+    - key: TEMPORAL_TLS_REFRESH_INTERVAL
+      value: "0s"
+    - key: TEMPORAL_TLS_EXPIRATION_CHECKS_WARNING_WINDOW
+      value: "0s"
+    - key: TEMPORAL_TLS_EXPIRATION_CHECKS_ERROR_WINDOW
+      value: "0s"
+    - key: TEMPORAL_TLS_EXPIRATION_CHECKS_CHECK_INTERVAL
+      value: "0s"
+    - key: TEMPORAL_TLS_REQUIRE_CLIENT_AUTH
+      value: "false"
+    - key: TEMPORAL_TLS_SERVER_CERT
+      value: ""
+    - key: TEMPORAL_TLS_SERVER_KEY
+      value: ""
+    - key: TEMPORAL_TLS_SERVER_CERT_DATA
+      value: ""
+    - key: TEMPORAL_TLS_SERVER_KEY_DATA
+      value: ""
+    - key: TEMPORAL_TLS_INTERNODE_SERVER_NAME
+      value: ""
+    - key: TEMPORAL_TLS_INTERNODE_DISABLE_HOST_VERIFICATION
+      value: "false"
+    - key: TEMPORAL_TLS_FRONTEND_CERT
+      value: ""
+    - key: TEMPORAL_TLS_FRONTEND_KEY
+      value: ""
+    - key: TEMPORAL_TLS_FRONTEND_CERT_DATA
+      value: ""
+    - key: TEMPORAL_TLS_FRONTEND_KEY_DATA
+      value: ""
+    - key: TEMPORAL_TLS_FRONTEND_SERVER_NAME
+      value: ""
+    - key: TEMPORAL_TLS_FRONTEND_DISABLE_HOST_VERIFICATION
+      value: "false"
+    - key: TEMPORAL_JWT_KEY_REFRESH
+      value: 1m
+    - key: TEMPORAL_JWT_PERMISSIONS_CLAIM
+      value: permissions
+    - key: TEMPORAL_AUTH_AUTHORIZER
+      value: ""
+    - key: TEMPORAL_AUTH_CLAIM_MAPPER
+      value: ""
+    - key: BIND_ON_IP
+      value: 127.0.0.1
 
 databases:
   - name: temporal-core
@@ -337,10 +429,9 @@ services:
     runtime: docker
     dockerfilePath: ./temporal-workflows/Dockerfile
     envVars:
-    - key: TEMPORAL_HOST
+    - key: TEMPORAL_GRPC_HOST
       fromService:
         name: temporal-frontend
         type: pserv
         property: host
-    - key: TEMPORAL_PORT
-      value: "7233"
+    - fromGroup: temporal-shared
