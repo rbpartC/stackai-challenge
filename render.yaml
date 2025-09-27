@@ -209,6 +209,8 @@ services:
     runtime: docker
     dockerfilePath: ./server/Dockerfile
     envVars:
+    - key : PORT
+      value: "7233"
     - fromGroup: temporal-shared
     - key: SERVICES
       value: frontend
