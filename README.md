@@ -9,6 +9,7 @@ This repository is organized so that each main folder contains the code and Dock
 - `/dev/temporal-stack` - Contains the Helm chart for local Kubernetes deployment, referencing the images built from the above folders.
 - `render.yaml` - Render.com deployment configuration, referencing the images and environment variables for all services.
 - `.pre-commit-config.yaml` - Precommit config to ensure homogenous styling and enforce compliance when collaborating.
+- `.github/workflows/` - Simple CI job to ensure pre-commit / linting are properly applied to maintain quality
 
 Each service in the deployment uses the Docker image built from its corresponding folder, ensuring clear separation of concerns and easy customization or extension of any component.
 
@@ -248,3 +249,7 @@ To view Temporal UI at the same time, forward the container port to a different 
 `
 kubectl port-forward -n default svc/temporal-ui 5000:8080
 `
+
+### Standardization and quality
+
+To ensure
