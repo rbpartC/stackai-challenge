@@ -14,8 +14,10 @@ repos:
             language_version: python3
             types: [python]
             args: [--profile, black, --filter-files]
-    # - repo: https://github.com/adrienverge/yamllint.git
-    #   rev: v1.21.0  # or higher tag
-    #   hooks:
-    #       - id: yamllint
-    #         args: [--format, parsable, --strict]
+    - repo: https://github.com/jtyr/kubeconform-helm
+      rev: v0.2.0
+      hooks:
+        - id: kubeconform-helm
+          language_version: python3.12
+          args:
+            - --charts-path=./dev/temporal-stack
