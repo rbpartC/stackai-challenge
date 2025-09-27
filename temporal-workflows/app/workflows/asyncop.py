@@ -1,10 +1,9 @@
 import asyncio
 from datetime import timedelta
 
+import settings
 from temporalio import activity, exceptions, workflow
 from temporalio.common import RetryPolicy
-
-from . import settings
 
 
 class IsEvenError(Exception):

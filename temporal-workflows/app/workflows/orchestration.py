@@ -2,10 +2,9 @@ import asyncio
 from datetime import timedelta
 from typing import Annotated, List
 
+import settings
 from pydantic import BaseModel, Field
 from temporalio import workflow
-
-from . import settings
 
 # --- Data models with validation ---
 

@@ -1,9 +1,8 @@
 import asyncio
 
+import settings
 from pydantic import BaseModel, Field
 from temporalio import workflow
-
-from . import settings
 
 # --- Workflow ---
 
