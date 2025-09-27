@@ -156,7 +156,7 @@ namespaceDefaults:
       URI: "file:///tmp/temporal_vis_archival/development"
 
 publicClient:
-    hostPort: '{{ default .Env.BIND_ON_IP "127.0.0.1" }}:{{  default .Env.FRONTEND_GRPC_PORT "7233" }}'
+    hostPort: '{{ default .Env.TEMPORAL_FRONTEND_HOST "127.0.0.1" }}:{{  default .Env.FRONTEND_GRPC_PORT "7233" }}'
 
 dynamicConfigClient:
     filepath: "{{ default .Env.DYNAMIC_CONFIG_FILE_PATH "/etc/temporal/config/dynamicconfig" }}"
