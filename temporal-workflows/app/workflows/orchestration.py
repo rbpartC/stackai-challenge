@@ -101,13 +101,14 @@ workflows = [
 
 async def main():
     client = await settings.get_client()
-    result = await client.start_workflow(
+    result = await client.execute_workflow(
         OrchestrationWorkflow.run,
         [1, 2, 3],
         id=f"orchestration-workflow-{uuid.uuid4()}",
         task_queue=settings.EXAMPLE_SYNC_QUEUE,
     )
     print(f"Workflow result: {result}")
+    return result
 
 
 if __name__ == "__main__":
