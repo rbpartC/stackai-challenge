@@ -139,7 +139,11 @@ temporal operator namespace update --visibility-archival-state enabled -n defaul
 
 ## Part 2 - Python Temporal Workflows
 
-### 1 - Orchestration
+### Basic examples
+
+First examples to demonstrate understanding of the patterns
+
+#### 1 - Orchestration
 
 Example execution : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/72992716-3647-4c94-a639-a98ca8bbfd8d/019984fa-76c7-716d-9eef-6ae588d77835/history
 
@@ -147,7 +151,7 @@ Workflow that coordinates mutltiple workflows.
 Execute addition, then multiplication in parallel of numbers, then synchronize all the outputs and sums the resulsts.
 We also perform simple typing validation with pydantics.
 
-### 2 - Async Operations
+#### 2 - Async Operations
 
 Example execution : 
 
@@ -163,7 +167,7 @@ Failure of activity due to timeout and fallback : https://temporal-ui-oq8v.onren
 This demonstrate capability to adapt error handling based on the type of error instead of catching everything.
 
 
-### 3 - Fire and foregt 
+#### 3 - Fire and foregt 
 
 Example execution :
 
@@ -171,7 +175,7 @@ Firing workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workf
 
 Forgetted workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/34686d1a-e722-4885-8096-18d4cbb58ddb/01998562-5c60-7121-9d71-f32192d6db4c/history
 
-### 4 - Long Running Processes
+#### 4 - Long Running Processes
 
 Initial workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/0436499f-b538-46b1-b798-517f676beea4/01998573-eacf-7cb3-8dd8-061bdc7eb560/history
 
@@ -180,11 +184,19 @@ Continued as new 1 : https://temporal-ui-oq8v.onrender.com/namespaces/default/wo
 Completion : 
 https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/0436499f-b538-46b1-b798-517f676beea4/83951006-e91e-4f13-ad06-26e4553ac040/history
 
+### Advanced use case
+
+We now build a system more advanced that features usage of LLMs
+
+The workflow WebPageReviewWorkflow demonstrate orchestration techniques, with a first activity to extract textual data from a webpage, then parallel execution of LLMs activities (entity extraction, summarization, classification). We then wait for a "human review" signal (with timeout and automatic validation) that must be given through the UI before completing the workflow
+
+
+
 ## Part 3 - Development Environment Setup
 
 ### 1. Install tools
 
-Run ./dev/install.sh to install automatically kubectl, helm, minikube on Linux/Debian machine.
+Run ./dev/install.sh script to install automatically kubectl, helm, minikube on Linux/Debian machine.
 It detects automatically which tools needs to be installed.
 
 ### 2. Setup
@@ -220,17 +232,9 @@ You can now run workflows directly on your computer on http://localhost:8080/
 #### 1. Setup
 
 Configure and install argocd locally
+
 `
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
-curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
-rm argocd-linux-amd64
-kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
-kubectl port-forward svc/argocd-server -n argocd 8080:443
-kubectl config set-context --current --namespace=argocd
-
+make setup
 `
 
 Then, once your forwarded port to 8080 on your host machine you can login through the CLI to create the temporal app very easily.
@@ -240,7 +244,7 @@ argocd login 127.0.0.1:8080 --username admin --password $(argocd admin initial-p
 
 argocd cluster add minikube
 
-kubectl apply -f /home/ruben/personal/stackai/dev/argocd-application.yaml -n argocd
+kubectl apply -f $(pwd)/dev/argocd-application.yaml -n argocd
 `
 
 With the current setup, the containers will be create in default namespace.
@@ -250,6 +254,29 @@ To view Temporal UI at the same time, forward the container port to a different 
 kubectl port-forward -n default svc/temporal-ui 5000:8080
 `
 
-### Standardization and quality
+#### 2. Development cycle
 
-To ensure
+Once your setup is done, you can edit the python workflows and refresh the python worker like so:
+
+`
+make restart-worker-pod
+`
+
+The pod will restart with the new image you just built (and you kill the previous one to insure you don't run outdated code)
+
+You can alias theses commands to a bash function in your environment for more convenience in your development flow.
+
+#### 3. Testing before containerize
+
+You can also run the local test suite that should be enough to ensure scripts are not broken.
+Run the installation of python dependencies (WARNING : you should probably setup a virtual environment before running install)
+
+`
+make install
+`
+
+Then simply execute the tests like so
+
+`
+make test
+`
