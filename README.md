@@ -30,21 +30,24 @@ Each service in the deployment uses the Docker image built from its correspondin
    - When using the temporal service container (and not the autosetup one), databases are not initialized with their appropriate schemas. You can deploy an admin-tools container as worker and enter it, then run the commands with the temporal-sql-tool to setup the psql schemas, and run the commands to configure the ES cluster and put the schema template, and create the visibility index. This container can be suspended after setting-up/upgrading schemas. The auto-setup script is actually a good way to understand the sequence and which commands to run.
    
       Command to run inside admin-tools container to create the PSQL schema (version of the schema depends on the version of temporal; I used latest versions of everything for simplicity)
-   `
-   ./temporal-sql-tool --ep $POSTGRES_SEEDS -p $POSTGRES_PORT -u $POSTGRES_USER --pw $POSTGRES_PASSWORD --db $DBNAME --pl postgres12 --tls setup-schema -d schema/postgresql/v12/temporal/versioned
-   `
+
+```bash
+./temporal-sql-tool --ep $POSTGRES_SEEDS -p $POSTGRES_PORT -u $POSTGRES_USER --pw $POSTGRES_PASSWORD --db $DBNAME --pl postgres12 --tls setup-schema -d schema/postgresql/v12/temporal/versioned
+```
+
       Commands to run inside admin-tools container to put ES settings and setup visibility mapping/index
-   `
-   ES_SERVER="${ES_SCHEME}://${ES_SEEDS%%,*}:${ES_PORT}"
-   SETTINGS_URL="${ES_SERVER}/_cluster/settings"
-   SETTINGS_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
-   SCHEMA_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/index_template_${ES_VERSION}.json
-   TEMPLATE_URL="${ES_SERVER}/_template/temporal_visibility_v1_template"
-   INDEX_URL="${ES_SERVER}/temporal_visibility_v1_dev"
-   curl --fail --user "${ELASTIC_USERNAME}":"${ELASTIC_PASSWORD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
-   curl --fail --user "${ELASTIC_USERNAME}":"${ELASTIC_PASSWORD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
-   curl --user "${ELASTIC_USERNAME}":"${ELASTIC_PASSWORD}" -X PUT "${INDEX_URL}" --write-out "\n"
-   `
+
+```bash
+ES_SERVER="${ES_SCHEME}://${ES_SEEDS%%,*}:${ES_PORT}"
+SETTINGS_URL="${ES_SERVER}/_cluster/settings"
+SETTINGS_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
+SCHEMA_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/index_template_${ES_VERSION}.json
+TEMPLATE_URL="${ES_SERVER}/_template/temporal_visibility_v1_template"
+INDEX_URL="${ES_SERVER}/temporal_visibility_v1_dev"
+curl --fail --user "${ELASTIC_USERNAME}":"${ELASTIC_PASSWORD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
+curl --fail --user "${ELASTIC_USERNAME}":"${ELASTIC_PASSWORD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
+curl --user "${ELASTIC_USERNAME}":"${ELASTIC_PASSWORD}" -X PUT "${INDEX_URL}" --write-out "\n"
+```
    This step can be automated as demonstrated later with the local dev environment, but in production it wouldn't serve any purpose or could be even dangerous (table suppressions or incompatibilities could be generated), and this step is very fast anyway.
 
 4. **Deploy Temporal Services**
@@ -61,7 +64,7 @@ Each service in the deployment uses the Docker image built from its correspondin
 - Docker runtime is used for portability and reproducibility.
 
 Unfortunately, it seems that postgres database is not configurable through envVarGroups, otherwise it would be a good way to share the parameters cleanly to the other services without repeating a lot of env vars.
----
+
 
 ### How to Verify the Cluster is Working
 
@@ -209,26 +212,29 @@ It detects automatically which tools needs to be installed.
 
 First start your local cluster
 
+```bash
 minikube start
+```
 
 You **must** build at least once the docker image with the python workflows **inside the docker env of k8s** for local development.
-Running from the root of this repo :
+Running from the root of this repo:
 
-`
+```bash
 eval $(minikube -p minikube docker-env)
 docker build -t python-worker:latest -f ./temporal-workflows/Dockerfile .
-`
+```
 
-Then deploy the helm chart by running : 
+Then deploy the helm chart by running:
 
-`
+```bash
 helm install temporal-stack ./dev/temporal-stack
-`
+```
 
 To view the UI on your computer, forward port
-`
+
+```bash
 kubectl port-forward svc/temporal-ui 8080:8080
-`
+```
 
 You can now run workflows directly on your computer on http://localhost:8080/
 
@@ -239,34 +245,34 @@ You can now run workflows directly on your computer on http://localhost:8080/
 
 Configure and install argocd locally
 
-`
+```bash
 make setup
-`
+```
 
 Then, once your forwarded port to 8080 on your host machine you can login through the CLI to create the temporal app very easily.
 
-`
+```bash
 argocd login 127.0.0.1:8080 --username admin --password $(argocd admin initial-password -n argocd | head -n 1)
 
 argocd cluster add minikube
 
 kubectl apply -f $(pwd)/dev/argocd-application.yaml -n argocd
-`
+```
 
 With the current setup, the containers will be create in default namespace.
-To view Temporal UI at the same time, forward the container port to a different port than ArgoCD, like : 
+To view Temporal UI at the same time, forward the container port to a different port than ArgoCD, like:
 
-`
+```bash
 kubectl port-forward -n default svc/temporal-ui 5000:8080
-`
+```
 
 #### 2. Development cycle
 
 Once your setup is done, you can edit the python workflows and refresh the python worker like so:
 
-`
+```bash
 make restart-worker-pod
-`
+```
 
 The pod will restart with the new image you just built (and you kill the previous one to insure you don't run outdated code)
 
@@ -277,12 +283,12 @@ You can alias theses commands to a bash function in your environment for more co
 You can also run the local test suite that should be enough to ensure scripts are not broken.
 Run the installation of python dependencies (WARNING : you should probably setup a virtual environment before running install)
 
-`
+```bash
 make install
-`
+```
 
 Then simply execute the tests like so
 
-`
+```bash
 make test
-`
+```
