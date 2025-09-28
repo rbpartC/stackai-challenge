@@ -7,6 +7,7 @@ from temporalio.common import VersioningBehavior
 from temporalio.worker import Worker, WorkerDeploymentConfig, WorkerDeploymentVersion
 from workflows.asyncop import async_activities, async_workflows
 from workflows.faf import faf_workflows
+from workflows.llm_review import llm_activities, llm_workflows
 from workflows.longrunning import longrunning_activities, longrunning_workflows
 from workflows.orchestration import workflows
 
@@ -18,11 +19,12 @@ async def main():
         worker = Worker(
             client,
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
-            activities=async_activities + longrunning_activities,
+            activities=async_activities + longrunning_activities + llm_activities,
             workflows=workflows
             + async_workflows
             + faf_workflows
-            + longrunning_workflows,
+            + longrunning_workflows
+            + llm_workflows,
             activity_executor=executor,
             workflow_task_executor=executor,
             deployment_config=WorkerDeploymentConfig(

@@ -201,6 +201,8 @@ services:
           type: pserv
           property: host
       - fromGroup: elasticsearch
+      - key: OPENAI_API_KEY
+        sync: false
 
   # Frontend service
   - type: pserv

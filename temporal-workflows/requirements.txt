@@ -1,2 +1,5 @@
 temporalio
 pydantic>=2
+openai
+bs4
+requests
