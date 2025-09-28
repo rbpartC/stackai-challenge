@@ -27,13 +27,6 @@ async def main():
             + llm_workflows,
             activity_executor=executor,
             workflow_task_executor=executor,
-            deployment_config=WorkerDeploymentConfig(
-                use_worker_versioning=True,
-                default_versioning_behavior=VersioningBehavior.PINNED,
-                version=WorkerDeploymentVersion(
-                    deployment_name=settings.DEPLOYMENT_NAME, build_id=settings.BUILD_ID
-                ),
-            ),
         )
         await worker.run()
 
