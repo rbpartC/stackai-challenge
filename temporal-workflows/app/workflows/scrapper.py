@@ -4,27 +4,25 @@ import pydantic
 from pydantic import BaseModel, Field
 from temporalio import activity, workflow
 
+BASE = "https://medium.com"
+DATEFORMAT = "%Y-%m"
+
 with workflow.unsafe.imports_passed_through():
     from datetime import datetime, timedelta
 
     import requests
     from bs4 import BeautifulSoup
 
-
-BASE = "https://medium.com"
-DATEFORMAT = "%Y-%m"
-
-
-def gen_year_month(up_to: str) -> list[str]:
-    up_to_date = datetime.strptime(up_to, DATEFORMAT)
-    current_date = datetime.now()
-    days = [
-        up_to_date + timedelta(days=date)
-        for date in range(0, (current_date - up_to_date).days + 1)
-    ]
-    year_months = list(set([date.strftime("%Y/%m") for date in days]))
-    year_months.sort()
-    return year_months
+    def gen_year_month(up_to: str) -> list[str]:
+        up_to_date = datetime.strptime(up_to, DATEFORMAT)
+        current_date = datetime.now()
+        days = [
+            up_to_date + timedelta(days=date)
+            for date in range(0, (current_date - up_to_date).days + 1)
+        ]
+        year_months = list(set([date.strftime("%Y/%m") for date in days]))
+        year_months.sort()
+        return year_months
 
 
 class ScrapParams(BaseModel):
