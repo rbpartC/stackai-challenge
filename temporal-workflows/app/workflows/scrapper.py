@@ -1,12 +1,13 @@
-import asyncio
 from datetime import datetime, timedelta
 from typing import Optional
 
 import pydantic
-import requests
-from bs4 import BeautifulSoup
 from pydantic import BaseModel, Field
 from temporalio import activity, workflow
+
+with workflow.unsafe.imports_passed_through():
+    import requests
+    from bs4 import BeautifulSoup
 
 BASE = "https://medium.com"
 DATEFORMAT = "%Y-%m"
