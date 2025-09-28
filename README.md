@@ -1,3 +1,18 @@
+# StackAI Challenge
+
+A full-stack Temporal deployment with Python LLM workflows, Helm, and Render.com integration.
+
+## Table of Contents
+- [Project Structure](#project-structure)
+- [Deliverables](#deliverables)
+- [Quick Start](#quick-start)
+- [Getting Started](#getting-started)
+- [Deployment Details](#deployment-details)
+- [Workflow Examples](#workflow-examples)
+- [Development Environment](#development-environment)
+- [Troubleshooting](#troubleshooting)
+- [Assumptions and Trade-offs](#assumptions-and-trade-offs)
+
 ## Project Structure
 
 This repository is organized so that each main folder contains the code and Dockerfile to build a Docker image used by one or more services in the deployment:
@@ -13,6 +28,12 @@ This repository is organized so that each main folder contains the code and Dock
 
 Each service in the deployment uses the Docker image built from its corresponding folder, ensuring clear separation of concerns and easy customization or extension of any component.
 
+## Deliverables
+- [x] `render.yaml` file ([link](https://github.com/rbpartC/stackai-challenge/blob/master/render.yaml))
+- [x] Live Temporal UI ([link](https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows))
+- [x] Example workflow runs (see  Part 2 - Python Temporal Workflows)
+- [x] Helm chart  ([link](https://github.com/rbpartC/stackai-challenge/blob/master/dev/temporal-stack))
+- [x] ArgoCD deployment  ([link](https://github.com/rbpartC/stackai-challenge/blob/master/dev/argocd-application.yaml))
 
 
 ## Part 1 - Deployment
@@ -133,12 +154,6 @@ Unfortunately, it seems that postgres database is not configurable through envVa
 `
 temporal operator namespace update --history-archival-state enabled -n default
 temporal operator namespace update --visibility-archival-state enabled -n default
-`
-
-### Deliverables
-
-- render.yaml file in this repository : https://github.com/rbpartC/stackai-challenge/blob/master/render.yaml
-- live temporal UI : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows
 
 ## Part 2 - Python Temporal Workflows
 
@@ -243,7 +258,7 @@ You can now run workflows directly on your computer on http://localhost:8080/
 
 #### 1. Setup
 
-Configure and install argocd locally
+Configure and install argocd locally. Everything was packaged into a make command for simplicity (install with sudo apt-get install build-essential on linux/debian)
 
 ```bash
 make setup
@@ -268,15 +283,14 @@ kubectl port-forward -n default svc/temporal-ui 5000:8080
 
 #### 2. Development cycle
 
-Once your setup is done, you can edit the python workflows and refresh the python worker like so:
+Once your setup is done, you can edit the python workflows and refresh the python worker with another custom make command for simplicity and ease of use.
 
 ```bash
 make restart-worker-pod
 ```
 
-The pod will restart with the new image you just built (and you kill the previous one to insure you don't run outdated code)
+The pod will restart with the new image you just built (and you kill the previous one to insure you don't run outdated code), so you can run instantly the new workflow in your local UI
 
-You can alias theses commands to a bash function in your environment for more convenience in your development flow.
 
 #### 3. Testing before containerize
 
