@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from typing import Optional
 
 import pydantic
@@ -6,8 +5,11 @@ from pydantic import BaseModel, Field
 from temporalio import activity, workflow
 
 with workflow.unsafe.imports_passed_through():
+    from datetime import datetime, timedelta
+
     import requests
     from bs4 import BeautifulSoup
+
 
 BASE = "https://medium.com"
 DATEFORMAT = "%Y-%m"
