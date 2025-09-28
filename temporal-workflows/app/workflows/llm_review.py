@@ -64,7 +64,10 @@ async def extract_entities(doc: str) -> LLMEntities:
     entities = get_openai_client().responses.parse(
         model="gpt-4o-mini",
         input=[
-            {"role": "user", "content": f"Extract entities from the document: {doc}"}
+            {
+                "role": "user",
+                "content": f"Extract maximum 3 entities from the document: {doc}",
+            }
         ],
         text_format=LLMEntities,
     )
