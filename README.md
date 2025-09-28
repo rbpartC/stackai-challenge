@@ -202,13 +202,16 @@ https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/126bcaef-49f8
 
 ### Advanced use case
 
-We now build a system more advanced that features usage of LLMs
+We now build a system more advanced that features usage of LLMs and web scrapping.
 
-The workflow WebPageReviewWorkflow demonstrate orchestration techniques, with a first activity to extract textual data from a webpage, then (sequentially) we launch parallel execution of LLMs activities (entity extraction, summarization, classification). We then wait for a "human review" signal (with timeout and automatic validation) that must be given through the UI before completing the workflow.
+#### Web article summarization
+
+The workflow WebPageReviewWorkflow demonstrate orchestration techniques, with a first activity to extract textual data from a webpage, then (sequentially) we launch parallel execution of LLMs activities (entity extraction, summarization, classification). We then wait for a "human review" signal (with timeout and automatic validation) that must be given through the UI before completing the workflow. 
 
 Here is an example run : 
 https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f912d5d9-c60b-4f7b-bda4-b11244028fd0/01998f59-6430-773a-bd2b-6cdf4999c226/history
 
+#### Web Scrapping
 
 If you want first to identify links of interest to you, you can also run the ExtractLinksWorkflows, where you provide a tag and a date to search for articles up to a certain point in Medium Archives.
 For example, if I want to list articles with the "technology" tag : 
