@@ -10,6 +10,7 @@ from workflows.faf import faf_workflows
 from workflows.llm_review import llm_activities, llm_workflows
 from workflows.longrunning import longrunning_activities, longrunning_workflows
 from workflows.orchestration import workflows
+from workflows.scrapper import scrapper_activities, scrapper_workflows
 
 
 async def main():
@@ -19,12 +20,16 @@ async def main():
         worker = Worker(
             client,
             task_queue=settings.EXAMPLE_SYNC_QUEUE,
-            activities=async_activities + longrunning_activities + llm_activities,
+            activities=async_activities
+            + longrunning_activities
+            + llm_activities
+            + scrapper_activities,
             workflows=workflows
             + async_workflows
             + faf_workflows
             + longrunning_workflows
-            + llm_workflows,
+            + llm_workflows
+            + scrapper_workflows,
             activity_executor=executor,
             workflow_task_executor=executor,
         )
