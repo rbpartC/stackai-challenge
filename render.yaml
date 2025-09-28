@@ -417,6 +417,7 @@ services:
     plan: starter
     region: frankfurt
     runtime: docker
+    autoDeployTrigger: checksPass
     dockerfilePath: ./temporal-workflows/Dockerfile
     envVars:
       - key: TEMPORAL_GRPC_HOST
