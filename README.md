@@ -192,6 +192,11 @@ Here is an example run :
 https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f912d5d9-c60b-4f7b-bda4-b11244028fd0/01998f59-6430-773a-bd2b-6cdf4999c226/history
 
 
+If you want first to identify links of interest to you, you can also run the ExtractLinksWorkflows, where you provide a tag and a date to search for articles up to a certain point in Medium Archives.
+For example, if I want to list articles with the "technology" tag : 
+Start run : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/310539fb-5a88-490f-b301-f26e44a64d49/01998fe4-bef4-7974-92ff-babfc9a06aa4/history
+Last run : 
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/310539fb-5a88-490f-b301-f26e44a64d49/3ccbea48-fa57-45df-b625-a3532526d53d/history
 
 ## Part 3 - Development Environment Setup
 
