@@ -1,14 +1,10 @@
 import asyncio
 
 import settings
-from pydantic import BaseModel, Field
 from temporalio import workflow
+from workflows.utils.types import PositiveInt
 
 # --- Workflow ---
-
-
-class PositiveInt(BaseModel):
-    value: int = Field(strict=True, gt=0)  # Positive integer
 
 
 @workflow.defn

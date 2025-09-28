@@ -17,3 +17,23 @@ jobs:
 
       - name: Run pre-commit hooks
         run: pre-commit run --all-files
+
+  test:
+    runs-on: ubuntu-latest
+    needs: precommit
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r temporal-workflows/requirements.txt
+          pip install pytest pytest-asyncio
+
+      - name: Run tests
+        run: PYTHONPATH=temporal-workflows/app pytest temporal-workflows/tests

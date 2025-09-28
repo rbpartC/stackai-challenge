@@ -145,7 +145,7 @@ First examples to demonstrate understanding of the patterns
 
 #### 1 - Orchestration
 
-Example execution : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/72992716-3647-4c94-a639-a98ca8bbfd8d/019984fa-76c7-716d-9eef-6ae588d77835/history
+Example execution : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f6e515a6-4b71-46b8-ac38-40c362a4f4ad/01998f5b-81ef-70e2-926c-1e3e50828567/history 
 
 Workflow that coordinates mutltiple workflows.
 Execute addition, then multiplication in parallel of numbers, then synchronize all the outputs and sums the resulsts.
@@ -155,40 +155,42 @@ We also perform simple typing validation with pydantics.
 
 Example execution : 
 
-Simulated failure of activity with retries fallback result : 
-https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/c91a41df-eac1-44ea-a8a1-6facf20ac31d/01998525-2a31-7206-9c6c-fd0d29ce56ef/history
+Simulated failure of activity: 
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f6e515a6-4b71-46b8-ac38-40c362a4f4ad/01998f5c-6004-7ec4-a3c4-44a2dec9c2d4/history
 
-Success : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/c91a41df-eac1-44ea-a8a1-6facf20ac31d/01998530-2dc6-7bb9-a524-4b8e93ca5a0e/history
+Success : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f6e515a6-4b71-46b8-ac38-40c362a4f4ad/01998f5c-4960-7c65-b926-cb07a60db893/history
 
-Failure of activity due to timeout but succeed because in bounds of maximum timeout  : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/75488f21-5248-4242-9519-fcbd7c71cc00/01998536-682b-77d6-9481-625c185f2293/history
-
-Failure of activity due to timeout and fallback : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/9426f56a-c708-4bae-98cc-4dad69cf5e23/01998547-79f9-7683-946a-6511529e4415/history
+Failure of activity due to timeout and fallback : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f6e515a6-4b71-46b8-ac38-40c362a4f4ad/01998f5d-5c8e-7ca8-b9f4-07c412612e94/history
 
 This demonstrate capability to adapt error handling based on the type of error instead of catching everything.
-
 
 #### 3 - Fire and foregt 
 
 Example execution :
 
-Firing workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/90499a3b-71d7-4edd-8c6c-7a315b226693/01998562-5bb0-7604-9e2f-5639bd02b981/history
+Firing workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/ad46e0f2-7a69-4c39-a30e-fe10be906c1b/01998f5f-c0e1-7a00-86e7-c4aa4f20f75a/history
 
-Forgetted workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/34686d1a-e722-4885-8096-18d4cbb58ddb/01998562-5c60-7121-9d71-f32192d6db4c/history
+Forgetted workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/2f57abc6-2000-48a0-a893-4f8469ea854a/01998f5f-c149-7c24-9323-4db6ba06e918/history
 
 #### 4 - Long Running Processes
 
-Initial workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/0436499f-b538-46b1-b798-517f676beea4/01998573-eacf-7cb3-8dd8-061bdc7eb560/history
+Initial workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/72d79a42-155c-46af-9461-4093ace8b347/01998f61-40ff-7bc7-829a-ca52865fd6ca/history
 
-Continued as new 1 : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/0436499f-b538-46b1-b798-517f676beea4/bb14b72e-f110-45bb-977b-888a2d432b4d/history
+Continued as new :
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/72d79a42-155c-46af-9461-4093ace8b347/54faf7e2-74a9-4dfe-9580-257157f1498a/history
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/72d79a42-155c-46af-9461-4093ace8b347/00a5ef17-1f1a-4793-95cd-939d25abda9b/history
 
 Completion : 
-https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/0436499f-b538-46b1-b798-517f676beea4/83951006-e91e-4f13-ad06-26e4553ac040/history
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/72d79a42-155c-46af-9461-4093ace8b347/c8cb5c8c-d4d7-4fe0-b407-7aed7d8256cb/history
 
 ### Advanced use case
 
 We now build a system more advanced that features usage of LLMs
 
-The workflow WebPageReviewWorkflow demonstrate orchestration techniques, with a first activity to extract textual data from a webpage, then parallel execution of LLMs activities (entity extraction, summarization, classification). We then wait for a "human review" signal (with timeout and automatic validation) that must be given through the UI before completing the workflow
+The workflow WebPageReviewWorkflow demonstrate orchestration techniques, with a first activity to extract textual data from a webpage, then (sequentially) we launch parallel execution of LLMs activities (entity extraction, summarization, classification). We then wait for a "human review" signal (with timeout and automatic validation) that must be given through the UI before completing the workflow.
+
+Here is an example run : 
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f912d5d9-c60b-4f7b-bda4-b11244028fd0/01998f59-6430-773a-bd2b-6cdf4999c226/history
 
 
 

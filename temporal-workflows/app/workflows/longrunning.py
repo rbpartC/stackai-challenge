@@ -2,7 +2,14 @@ import asyncio
 from datetime import timedelta
 from typing import Any, List
 
+from pydantic import BaseModel, Field
 from temporalio import activity, workflow
+
+
+class DatasetParams(BaseModel):
+    length: int = Field(strict=True, gt=0)  # Positive integer
+    start_index: int = Field(default=0, ge=0)  # Non-negative integer
+    total_processed: int = Field(default=0, ge=0)  # Non-negative integer
 
 
 # Activity to process a chunk of data with heartbeat progress reporting
@@ -29,16 +36,16 @@ class ProcessLargeDatasetWorkflow:
         self.chunk_size = 100
 
     @workflow.run
-    async def run(
-        self, dataset_length, start_index: int = 0, total_processed: int = 0
-    ) -> int:
+    async def run(self, dataset_params: DatasetParams) -> int:
         # If all data processed, return total
-        if start_index >= dataset_length:
-            return total_processed
+        if dataset_params.start_index >= dataset_params.length:
+            return dataset_params.total_processed
 
         # Process next chunk
-        end_index = min(start_index + self.chunk_size, dataset_length)
-        chunk = range(start_index, end_index)  # Simulated data chunk
+        end_index = min(
+            dataset_params.start_index + self.chunk_size, dataset_params.length
+        )
+        chunk = range(dataset_params.start_index, end_index)  # Simulated data chunk
         processed = await workflow.execute_activity(
             process_data_chunk,
             chunk,
@@ -48,7 +55,11 @@ class ProcessLargeDatasetWorkflow:
 
         # Continue as new for next chunk
         return await workflow.continue_as_new(
-            args=[dataset_length, end_index, total_processed + processed],
+            args=DatasetParams(
+                length=dataset_params.length,
+                start_index=end_index,
+                total_processed=dataset_params.total_processed + processed,
+            ),
         )
 
 

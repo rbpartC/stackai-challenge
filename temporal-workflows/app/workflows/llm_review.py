@@ -2,7 +2,7 @@ import asyncio
 from datetime import timedelta
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 from settings import get_openai_client
 from temporalio import activity, workflow
 from workflows.utils.extract_text import extract_text_from_url
@@ -12,6 +12,10 @@ from workflows.utils.extract_text import extract_text_from_url
 REVIEW_TIMEOUT = timedelta(minutes=10)
 REFRESH_RATE = 10  # seconds
 AUTO_APPROVED_STATUS = "auto-approved"
+
+
+class Url(BaseModel):
+    url: HttpUrl
 
 
 class Entity(BaseModel):
@@ -104,9 +108,10 @@ class WebPageReviewWorkflow:
     @workflow.run
     async def run(self, url: str) -> LLMResult:
 
+        validated = Url(url=url)
         # Step 1: Extract text from the URL
         doc = await workflow.execute_activity(
-            extract_text, url, schedule_to_close_timeout=timedelta(seconds=30)
+            extract_text, validated.url, schedule_to_close_timeout=timedelta(seconds=30)
         )
 
         # Run LLM activities in parallel
