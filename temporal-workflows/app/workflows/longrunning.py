@@ -55,11 +55,13 @@ class ProcessLargeDatasetWorkflow:
 
         # Continue as new for next chunk
         return await workflow.continue_as_new(
-            args=DatasetParams(
-                length=dataset_params.length,
-                start_index=end_index,
-                total_processed=dataset_params.total_processed + processed,
-            ),
+            args=[
+                DatasetParams(
+                    length=dataset_params.length,
+                    start_index=end_index,
+                    total_processed=dataset_params.total_processed + processed,
+                )
+            ],
         )
 
 
