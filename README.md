@@ -137,7 +137,7 @@ temporal operator namespace update --visibility-archival-state enabled -n defaul
 
 ### Deliverables
 
-- render.yaml file in this repository
+- render.yaml file in this repository : https://github.com/rbpartC/stackai-challenge/blob/master/render.yaml
 - live temporal UI : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows
 
 ## Part 2 - Python Temporal Workflows
