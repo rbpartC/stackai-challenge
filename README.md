@@ -1,3 +1,5 @@
+[![.github/workflows/main.yaml](https://github.com/rbpartC/stackai-challenge/actions/workflows/main.yaml/badge.svg)](https://github.com/rbpartC/stackai-challenge/actions/workflows/main.yaml)
+![Coverage](https://github.com/rbpartC/stackai-challenge/blob/badges/static/badges/coverage.svg?raw=true)
 # StackAI Challenge
 
 A full-stack Temporal deployment with Python LLM workflows, Helm, and Render.com integration.

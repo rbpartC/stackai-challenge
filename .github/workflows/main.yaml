@@ -1,5 +1,10 @@
 on: [push]
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   precommit:
     runs-on: ubuntu-latest
@@ -30,6 +35,14 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Set up directories
+        run: |
+          mkdir -p ./static/badges
+          mkdir -p ./static/reports
+          touch ./static/index.html
+
+      # NOTE: We could use docker based action to run tests in a container but we have few dependencies
+      # so it simpler and probably faster to run directly
       - name: Install dependencies
         run: |
           pip install -r temporal-workflows/requirements.txt
@@ -38,31 +51,32 @@ jobs:
       - name: Run tests with coverage
         run: |
           PYTHONPATH=temporal-workflows/app pytest --cov=temporal-workflows/app --cov-report=xml --cov-report=term temporal-workflows/tests
-
-      - name: Save coverage report artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: ./coverage.xml
+          cp coverage.xml ./static/reports/coverage.xml
 
       - name: Generate coverage badge
         uses: tj-actions/coverage-badge-py@v2
         with:
-          output: coverage.svg
-
-      - name: Upload coverage badge artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-badge
-          path: ./coverage.svg
+          output: ./static/badges/coverage.svg
 
       - name: Run security scan with Bandit
         run: |
           pip install bandit
-          bandit -r temporal-workflows/app -f xml -o bandit-report.xml || true
+          bandit -r temporal-workflows/app -f xml -o ./static/reports/bandit-report.xml || true
 
-      - name: Save security scan report artifact
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+     
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: bandit-report
-          path: ./bandit-report.xml
+          path: ./static
+          name: reports
+
+      - name: Commit coverage badge
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b badges
+          git add ./static/badges/coverage.svg
+          git commit -m "chore: update coverage badge [skip ci]" || echo "No changes to commit"
+          git push -f origin HEAD:badges
