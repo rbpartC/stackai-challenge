@@ -1,5 +1,7 @@
 on: [push]
 
+name: CI
+
 permissions:
   contents: write
   pages: write
