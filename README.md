@@ -145,15 +145,18 @@ Unfortunately, it seems that postgres database is not configurable through envVa
 
 - **Trade-offs**
   - Using the free plan for PostgreSQL and standard plan for Elasticsearch may limit scalability and performance.
-  - ES is deployed in single-node mode but should be deployed on cluster mode.
+  - ES is deployed in single-node mode for simplicity but should be deployed on cluster mode for better scalability
+  - SSL is disabled on the database -> Increased performance but less security. Depends on what are the requirements.
+  - SSL signing disabled on temporal services, but could be activated for improved security as well.
 
 ### Optionals 
 
-- Enable archival for your namespace (default here) by logging into the shell of your temporal-frontend container, and run :
+- Enable archival for your namespace (default namespace here) by logging into the shell of your temporal-frontend container, and run :
 
-`
+```bash
 temporal operator namespace update --history-archival-state enabled -n default
 temporal operator namespace update --visibility-archival-state enabled -n default
+```
 
 ## Part 2 - Python Temporal Workflows
 
@@ -211,6 +214,8 @@ The workflow WebPageReviewWorkflow demonstrate orchestration techniques, with a 
 Here is an example run : 
 https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f912d5d9-c60b-4f7b-bda4-b11244028fd0/01998f59-6430-773a-bd2b-6cdf4999c226/history
 
+This is a more advanced use case that demonstrate orchestration of processes with both sequential and parallel activities, and handling of error-prone async operations.
+
 #### Web Scrapping
 
 If you want first to identify links of interest to you, you can also run the ExtractLinksWorkflows, where you provide a tag and a date to search for articles up to a certain point in Medium Archives.
@@ -219,6 +224,9 @@ Start run : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/3
 Last run : 
 https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/310539fb-5a88-490f-b301-f26e44a64d49/3ccbea48-fa57-45df-b625-a3532526d53d/history
 
+
+This use case demonstrates how to use long running processes. Search could also be done in parallel for different archival dates and/or tags.
+For better scalability, the URL list should be transferred into a data sink (such as a database or S3) because Temporal imposes a 4MB size limit on task data. As the list of URLs grows, storing them directly in workflow state can exceed this limit and cause failures. See [Temporal documentation on payload size limits](https://docs.temporal.io/cloud/limits) for more details.
 ## Part 3 - Development Environment Setup
 
 ### 1. Install tools
