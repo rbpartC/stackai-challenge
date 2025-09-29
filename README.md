@@ -266,28 +266,40 @@ kubectl port-forward svc/temporal-ui 8080:8080
 
 You can now run workflows directly on your computer on http://localhost:8080/
 
+### 3. Tooling
 
-### 3. ArgoCD
+For more convenience, all this process (install and setup) can be done automatically with
+
+```bash
+make helm-dev
+```
+
+Don't forget to kill all pods when stopping the dev setup :
+
+```bash
+helm uninstall temporal-stack
+```
+### 4. ArgoCD
 
 #### 1. Setup
 
 Configure and install argocd locally. Everything was packaged into a make command for simplicity (install with sudo apt-get install build-essential on linux/debian)
 
 ```bash
-make setup
+make argocd-setup
 ```
 
 Then, once your forwarded port to 8080 on your host machine you can login through the CLI to create the temporal app very easily.
 
 ```bash
-argocd login 127.0.0.1:8080 --username admin --password $(argocd admin initial-password -n argocd | head -n 1)
+echo "y" | argocd login 127.0.0.1:8080 --username admin --password $(argocd admin initial-password -n argocd | head -n 1)
 
-argocd cluster add minikube
+echo "y" | argocd cluster add minikube
 
-kubectl apply -f $(pwd)/dev/argocd-application.yaml -n argocd
+argocd app create temporal-stack -f ./dev/argocd-application.yaml
 ```
 
-With the current setup, the containers will be create in default namespace.
+With the current setup, the containers will be created in default namespace.
 To view Temporal UI at the same time, forward the container port to a different port than ArgoCD, like:
 
 ```bash
@@ -311,7 +323,7 @@ You can also run the local test suite that should be enough to ensure scripts ar
 Run the installation of python dependencies (WARNING : you should probably setup a virtual environment before running install)
 
 ```bash
-make install
+make test-install
 ```
 
 Then simply execute the tests like so
