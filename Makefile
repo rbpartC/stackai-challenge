@@ -46,4 +46,4 @@ test-install:
 	pip install -r temporal-workflows/requirements.txt
 
 test:
-	PYTHONPATH=temporal-workflows/app $(PYTHON) -m pytest temporal-workflows/tests
+	PYTHONPATH=temporal-workflows/app $(PYTHON) -m pytest -vv temporal-workflows/tests
