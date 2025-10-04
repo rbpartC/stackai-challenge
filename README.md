@@ -214,7 +214,7 @@ We now build a system more advanced that features usage of LLMs and web scrappin
 The workflow WebPageReviewWorkflow demonstrate orchestration techniques, with a first activity to extract textual data from a webpage, then (sequentially) we launch parallel execution of LLMs activities (entity extraction, summarization, classification). We then wait for a "human review" signal (with timeout and automatic validation) that must be given through the UI before completing the workflow. 
 
 Here is an example run : 
-https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f912d5d9-c60b-4f7b-bda4-b11244028fd0/01998f59-6430-773a-bd2b-6cdf4999c226/history
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/834e39a0-f7bd-44cf-823c-09be0fcc88a6/0199addc-0875-7094-8ba2-aa5d8897ed81/history
 
 This is a more advanced use case that demonstrate orchestration of processes with both sequential and parallel activities, and handling of error-prone async operations.
 
