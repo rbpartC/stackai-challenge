@@ -2,7 +2,7 @@ import asyncio
 from datetime import timedelta
 from typing import List, Optional
 
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl, UrlConstraints, field_serializer
 from settings import get_openai_client
 from temporalio import activity, workflow
 from workflows.utils.extract_text import extract_text_from_url
@@ -16,6 +16,10 @@ AUTO_APPROVED_STATUS = "auto-approved"
 
 class Url(BaseModel):
     url: HttpUrl
+
+    @field_serializer("url")
+    def serialize_url(cls, v: HttpUrl) -> str:
+        return v.unicode_string()
 
 
 class Entity(BaseModel):

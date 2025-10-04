@@ -168,7 +168,7 @@ First examples to demonstrate understanding of the patterns
 
 #### 1 - Orchestration
 
-Example execution : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f6e515a6-4b71-46b8-ac38-40c362a4f4ad/01998f5b-81ef-70e2-926c-1e3e50828567/history 
+Example execution : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f040d60c-0838-4652-954c-0b96bd0f703e/0199adb2-5448-7dc1-9571-c475d92d813f/history 
 
 Workflow that coordinates mutltiple workflows.
 Execute addition, then multiplication in parallel of numbers, then synchronize all the outputs and sums the resulsts.
@@ -179,11 +179,11 @@ We also perform simple typing validation with pydantics.
 Example execution : 
 
 Simulated failure of activity: 
-https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f6e515a6-4b71-46b8-ac38-40c362a4f4ad/01998f5c-6004-7ec4-a3c4-44a2dec9c2d4/history
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/518fc70d-a168-4b7d-b465-3519f98f4dd3/0199adb2-aacb-7388-ae2f-d88fe3a3491b/history
 
-Success : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f6e515a6-4b71-46b8-ac38-40c362a4f4ad/01998f5c-4960-7c65-b926-cb07a60db893/history
+Success : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/518fc70d-a168-4b7d-b465-3519f98f4dd3/0199adb2-9eab-744a-b6a8-12c68954a1c2/history
 
-Failure of activity due to timeout and fallback : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/f6e515a6-4b71-46b8-ac38-40c362a4f4ad/01998f5d-5c8e-7ca8-b9f4-07c412612e94/history
+Failure of activity due to timeout and fallback : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/518fc70d-a168-4b7d-b465-3519f98f4dd3/0199adb2-c8b2-706e-9505-6815ed08e839/history
 
 This demonstrate capability to adapt error handling based on the type of error instead of catching everything.
 
@@ -191,19 +191,19 @@ This demonstrate capability to adapt error handling based on the type of error i
 
 Example execution :
 
-Firing workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/ad46e0f2-7a69-4c39-a30e-fe10be906c1b/01998f5f-c0e1-7a00-86e7-c4aa4f20f75a/history
+Firing workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/bc731835-9659-450d-a704-4f4534d9873b/0199adb3-ad68-7b88-8c55-5d5b095da5c6/history
 
-Forgetted workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/2f57abc6-2000-48a0-a893-4f8469ea854a/01998f5f-c149-7c24-9323-4db6ba06e918/history
+Forgetted workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/965d763d-9bd7-4ef3-969b-b4e719b15173/0199adb3-adc8-77c8-a70e-c0304cdc6db8/history
 
 #### 4 - Long Running Processes
 
-Initial workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/126bcaef-49f8-4488-9695-bb4ab5b3d503/01998f6d-f1e5-75be-9c21-e8648bbaf3dc/history
+Initial workflow : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/12b3372d-27e0-4e97-89e7-5a17a717ff29/0199adb4-3ffc-798b-89f0-8c7a17d2d5f1/history
 
 Continued as new :
-https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/126bcaef-49f8-4488-9695-bb4ab5b3d503/5ad42d87-ac9b-4334-aba3-27b9ac011430/history
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/12b3372d-27e0-4e97-89e7-5a17a717ff29/040fd7bb-4c3c-4e91-8215-73f6bb986971/history
 
 Completion : 
-https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/126bcaef-49f8-4488-9695-bb4ab5b3d503/c205b2e4-948a-433d-9565-52d93d6bf298/history
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/12b3372d-27e0-4e97-89e7-5a17a717ff29/05d4604a-a3ba-4b6e-9242-d241195d16d2/history
 
 ### Advanced use case
 
@@ -222,9 +222,9 @@ This is a more advanced use case that demonstrate orchestration of processes wit
 
 If you want first to identify links of interest to you, you can also run the ExtractLinksWorkflows, where you provide a tag and a date to search for articles up to a certain point in Medium Archives.
 For example, if I want to list articles with the "technology" tag : 
-Start run : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/310539fb-5a88-490f-b301-f26e44a64d49/01998fe4-bef4-7974-92ff-babfc9a06aa4/history
+Start run : https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/295f0d07-bcda-475d-a700-97804d29521e/0199adb9-e5ea-741a-ad2c-4d7ed10ee2d0/history
 Last run : 
-https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/310539fb-5a88-490f-b301-f26e44a64d49/3ccbea48-fa57-45df-b625-a3532526d53d/history
+https://temporal-ui-oq8v.onrender.com/namespaces/default/workflows/295f0d07-bcda-475d-a700-97804d29521e/afa1a530-4a05-4fd5-9928-c344332c2544/history
 
 
 This use case demonstrates how to use long running processes. Search could also be done in parallel for different archival dates and/or tags.
