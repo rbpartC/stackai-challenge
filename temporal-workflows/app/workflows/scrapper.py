@@ -45,7 +45,7 @@ async def gen_year_month(up_to: str) -> list[str]:
         up_to_date + timedelta(days=date)
         for date in range(0, (current_date - up_to_date).days + 1)
     ]
-    year_months = list(set([date.strftime("%Y/%m") for date in days]))
+    year_months = list(set([date.strftime(DATEFORMAT) for date in days]))
     year_months.sort()
     return year_months
 
